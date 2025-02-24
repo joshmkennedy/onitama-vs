@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+
+go run /Users/joshkennedy/projects/onitama-vs/onitama-server/cmd/onitama-serve/main.go
