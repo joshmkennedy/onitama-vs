@@ -8,7 +8,7 @@ export function useWS(messageHandler: (msg: any) => void) {
 			console.log("No game Id Found will be given a new one");
 		}
 		if (!ws) {
-			ws = new WebSocket("ws://localhost:8080/ws?gameId=" + gameId);
+			ws = new WebSocket("ws://192.168.68.112:8080/ws?gameId=" + gameId);
 		}
 		if (ws) {
 			ws.onmessage = messageHandler;
