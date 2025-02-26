@@ -10,6 +10,8 @@ RUN npm install
 # Copy the rest of the frontend code
 COPY . .
 
+ENV NEXT_PUBLIC_BACKEND_URL=wss://api.play-onitama.com
+
 # Build the Next.js application (production build)
 RUN npm run build
 

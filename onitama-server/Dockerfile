@@ -14,6 +14,8 @@ FROM alpine:latest
 COPY --from=builder /app/onitama-serve /app/onitama-serve
 COPY --from=builder /app/assets/ /app/assets/
 
+ENV CARD_CONFIG_FILE=/app/assets/cards.json
+
 EXPOSE 8080
 
 CMD ["./app/onitama-serve"]

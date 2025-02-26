@@ -115,7 +115,8 @@ func NewGameState() *GameState {
 
 func generateCards() []Card {
 	// read from cards.json
-	jsonContents, err := os.ReadFile("/app/assets/cards.json")
+    cardsfile := os.Getenv("CARD_CONFIG_FILE")
+	jsonContents, err := os.ReadFile(cardsfile)
 	if err != nil {
 		panic(err)
 	}
