@@ -1,0 +1,15 @@
+{
+    # Global options block
+    email joshmk93@gmail.com # Replace with your email for Let's Encrypt
+    # optional: default_sni example.com
+}
+
+play-onitama.com {
+    # This block is for "example.com" (root domain)
+    reverse_proxy frontend:3000
+}
+
+api.play-onitama.com {
+    # This block is for subdomain "api.example.com"
+    reverse_proxy backend:8080
+}

@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  caddy:
+    image: "caddy:latest"
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Mount our Caddyfile into the container
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      # Mount a volume to store automatic HTTPS certs/keys
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+
+
   backend:
     build: 
       context: ./onitama-server
@@ -29,4 +47,7 @@ services:
     environment:
       NEXT_PUBLIC_BACKEND_URL: "localhost:8080"  # If your frontend needs to call the backend in Docker
 
+volumes:
+  caddy_data:
+  caddy_config:
 
