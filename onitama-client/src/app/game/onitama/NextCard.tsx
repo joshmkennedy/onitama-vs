@@ -5,9 +5,11 @@ import { gameStateStore } from "./state";
 
 export default function NextCard({ player }: { player: 1 | 2 }) {
   const [gameState] = useAtom(gameStateStore);
+
+	if (!gameState) return null;
   const nextCardIndex = gameState[playerNexCardKey(player)];
   if (nextCardIndex == null) return null;
-  const card = gameState.Cards[nextCardIndex];
+  const card = gameState.cards[nextCardIndex];
   const side = player == 1 ? "left-next" : "right-next";
   return (
     <div className={`${side} next-card`}>
