@@ -115,7 +115,7 @@ func NewGameState() *GameState {
 
 func generateCards() []Card {
 	// read from cards.json
-	jsonContents, err := os.ReadFile(os.Getenv("HOME") + "/projects/onitama-vs/onitama-server/pkg/game/cards.json")
+	jsonContents, err := os.ReadFile("/app/assets/cards.json")
 	if err != nil {
 		panic(err)
 	}

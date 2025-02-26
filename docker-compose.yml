@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./onitama-server
+      dockerfile: Dockerfile
+    container_name: go-backend
+    ports:
+      - "8080:8080"
+    # You can set environment variables here if needed
+    #environment:
+      # Example: "KEY=VALUE"
+      # API_KEY: "your-api-key"
+      # ...
+    # If you need volumes, you can define them here (optional)
+    # volumes:
+    #   - ./backend:/app
+
+  frontend:
+    build: 
+      context: ./onitama-client
+      dockerfile: Dockerfile
+    container_name: next-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_BACKEND_URL: "localhost:8080"  # If your frontend needs to call the backend in Docker
+
+
