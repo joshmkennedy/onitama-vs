@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"onitama-server/pkg/game"
 	"onitama-server/pkg/utils"
 )
 
@@ -21,6 +22,7 @@ func NewHub() *Hub {
 }
 
 type Message struct {
+	From     uint8
 	GameId   string
 	Contents []byte
 }
@@ -46,19 +48,30 @@ func (h *Hub) Run() {
 		case client := <-h.register:
 			h.JoinGame(client, client.gameId)
 
+
 		case client := <-h.unregister:
 			if _, ok := h.games[client.gameId].Clients[client]; ok {
 				delete(h.games[client.gameId].Clients, client)
 				close(client.send)
 			}
+
 		case message := <-h.broadcast:
-			if game, ok := h.games[message.GameId]; ok {
-				for client := range game.Clients {
-					select {
-					case client.send <- message.Contents:
-					default:
-						close(client.send)
-						delete(game.Clients, client)
+			if g, ok := h.games[message.GameId]; ok {
+                // to is plyayerId to send to or 0 for all
+				to, reply, err := g.HandleMessage(message)
+				if err != nil {
+					log.Println("Error handling message ")
+					continue
+				}
+
+				for client := range g.Clients {
+					if client.PlayerId == to || to == 0 {
+						select {
+						case client.send <- reply:
+						default:
+							close(client.send)
+							delete(g.Clients, client)
+						}
 					}
 				}
 			}
@@ -92,10 +105,10 @@ func (h *Hub) RegisterGame(w http.ResponseWriter, r *http.Request) {
 func (h *Hub) newGame() (string, error) {
 	newGameId := utils.GenerateGameID()
 
-
 	h.games[newGameId] = &Game{
 		Id:      newGameId,
 		Clients: make(map[*Client]bool),
+		State:   game.NewGameState(),
 	}
 	log.Println("Created new game: ", newGameId)
 	return newGameId, nil
@@ -104,7 +117,6 @@ func (h *Hub) newGame() (string, error) {
 func (h *Hub) JoinGame(client *Client, gameId string) {
 	// Possibly remove client from previous game
 	if client.gameId != "" && client.gameId != gameId {
-        log.Println("Uh OH")
 		h.LeaveGame(client, client.gameId)
 	}
 
@@ -119,9 +131,8 @@ func (h *Hub) JoinGame(client *Client, gameId string) {
 		// if we do this we need to
 		// send a message to client to let them know
 		// to update their url and
-        client.send <- []byte("UPDATE GAMEID: " + gid)
+		client.send <- sendMessage("UPDATE GAMEID: " + gid)
 	}
-
 
 	if len(h.games[gameId].Clients) >= 2 {
 		gid, err := h.newGame()
@@ -130,17 +141,27 @@ func (h *Hub) JoinGame(client *Client, gameId string) {
 			return
 		}
 		gameId = gid
-		// we need to send a message to 
-        // client to let them know
+		// we need to send a message to
+		// client to let them know
 		// to update their url and
-        client.send <- []byte("UPDATE GAMEID: " + gid)
+		client.send <- sendMessage("Game was full, NEW GAMEID: " + gid)
 	}
 
-
 	// Add client to the game
-    client.gameId = gameId
+	client.gameId = gameId
+	client.PlayerId = getNextPlayerId(h.games[client.gameId].Clients)
 	h.games[client.gameId].Clients[client] = true
-    client.send <- []byte("You have joined " + client.gameId)
+
+	client.send <- sendMessage("You have joined " + client.gameId + " as Player " + string(client.PlayerId))
+	// client.send <- sendGameState(h.games[client.gameId].State)
+    client.send <- sendWelcomeMessage(client.PlayerId, client.gameId)
+
+    if len(h.games[client.gameId].Clients) == 2 {
+        h.games[client.gameId].State.Status = game.STATUS_PLAYING
+        for client := range h.games[client.gameId].Clients {
+            client.send <- sendGameState(h.games[client.gameId].State)
+        }
+    }
 	log.Println("Joined game: ", client.gameId)
 }
 
@@ -154,4 +175,15 @@ func (h *Hub) LeaveGame(client *Client, gameId string) {
 		client.gameId = ""
 		log.Println("Left game: ", gameId)
 	}
+}
+
+// We only ever have 2 players
+// so dis is ok
+func getNextPlayerId(clients map[*Client]bool) uint8 {
+    for client := range clients {
+        if client.PlayerId == 1 {
+            return 2;
+        }
+    }
+    return 1
 }

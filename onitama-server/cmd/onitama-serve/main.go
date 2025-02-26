@@ -26,13 +26,18 @@ func main() {
 	flag.Parse()
 	h := hub.NewHub()
 	go h.Run()
-    http.HandleFunc("/", serveHome)
-    http.HandleFunc("/register", h.RegisterGame)
+	http.HandleFunc("/", serveHome)
+	http.HandleFunc("/register", h.RegisterGame)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-        log.Println("connecting...")
+		w.Header().Set("Access-Control-Allow-Origin", "*") // ✅ Allows all origins
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		log.Println("connecting...")
 		hub.ServeWs(h, w, r)
 	})
-    err:=http.ListenAndServe(*addr, nil); if err != nil {
-        log.Fatal("ListenAndServe: ",err)
-    }
+	err := http.ListenAndServe(*addr, nil)
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 }

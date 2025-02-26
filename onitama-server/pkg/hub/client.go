@@ -31,6 +31,10 @@ var (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+    CheckOrigin: func(r *http.Request) bool {
+        // TODO: 🤷
+        return true
+    },
 }
 
 func ServeWs(h *Hub, w http.ResponseWriter, r *http.Request) {
@@ -73,8 +77,12 @@ type Client struct {
 	send chan []byte
 
 	gameId string
+
+    PlayerId uint8
 }
 
+// When a user makes a move or communicates 
+// to the server in some way
 func (c *Client) readPump() {
 	defer func() {
 		c.hub.unregister <- c
@@ -98,12 +106,14 @@ func (c *Client) readPump() {
 		contents = bytes.TrimSpace(bytes.ReplaceAll(contents, newline, space))
 
 		c.hub.broadcast <- &Message{
+            From: c.PlayerId,
 			GameId:   c.gameId,
 			Contents: contents,
 		}
 	}
 }
 
+// Sends the message to the user
 func (c *Client) writePump() {
 	ticker := time.NewTicker(pingPeriod)
 
