@@ -31,7 +31,7 @@ export default function Header({
 				</>
 			) : (
 				<>
-					<div>Player {currentPlayer}'s Turn</div>
+					<div>Player {currentPlayer}&apos;s Turn</div>
 					<button onClick={showHelp}>?</button>
 				</>
 			)}

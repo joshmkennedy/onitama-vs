@@ -3,8 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const boardLayoutImage = "/board-layout.png";
 const basesImage = "/Bases.png";
-const moveHintsImage = "/Move-Hints-Squares.png";
-const PlayTurnButtonImage = "/Play-turn-button.png";
 const PlayTurnWalkthrough = "/Play-Turn-Walkthrough.png";
 const CaptainUnit = "/Player1-captain.png";
 const PawnUnit = "/Player1-pawn.png";
@@ -44,7 +42,7 @@ const slides = [
     <motion.div {...motionSettings} key={1} className="slide">
       <h3>Overview</h3>
       <div className="image">
-        <img src={boardLayoutImage} />
+        <img alt="the board or grid of onitama" src={boardLayoutImage} />
       </div>
       <p>
         Onitama is a two player game, where players take turn choosing from 2
@@ -58,11 +56,15 @@ const slides = [
       <h3>Units</h3>
       <div className="flex-row">
         <div className="image">
-          <img src={CaptainUnit} />
+          <img alt="The captain in onitama" src={CaptainUnit} />
           <p>Player 1 Captain</p>
         </div>
         <div className="image">
-          <img src={PawnUnit} style={{ width: ` 50%` }} />
+          <img
+            src={PawnUnit}
+            alt="the pawn in onitama"
+            style={{ width: ` 50%` }}
+          />
           <p>Player 1 Pawn</p>
         </div>
       </div>
@@ -73,7 +75,7 @@ const slides = [
     <motion.div className="slide" {...motionSettings} key={3}>
       <h3>Bases</h3>
       <div className="image">
-        <img src={basesImage} />
+        <img src={basesImage} alt="The base tile in onitama" />
       </div>
     </motion.div>
   ),
@@ -82,15 +84,18 @@ const slides = [
     <motion.div className="slide" {...motionSettings} key={4}>
       <h3>The Players Turn</h3>
       <div className="image">
-        <img src={PlayTurnWalkthrough} />
+        <img
+          src={PlayTurnWalkthrough}
+          alt="An example of a turn in onitama"
+        />
       </div>
       <p>
-        One the players turn. They will first select the card they wish to use
+        On the players turn. They will first select the card they wish to use
         from their side of the board. Then they will choose the unit they wish
         to move using the selected card. After they have chosen the unit, the
         player will select a position to move to. Finally they will click the
-        "Take Turn" button to confirm their move. It will then be the next
-        players turn.
+        {'"'}Take Turn{'"'} button to confirm their move. It will then be the
+        next players turn.
       </p>
     </motion.div>
   ),
@@ -100,16 +105,16 @@ const slides = [
       <h3>Win Conditions</h3>
       <div className="flex-row">
         <div className="image">
-          <img src={WinCaptureCaptain} />
+          <img src={WinCaptureCaptain} alt="capturing team\'s captian" />
           <p>Capture Opponent Captain</p>
         </div>
         <div className="image">
-          <img src={WinCaptureBase} />
+          <img alt="capturing the base win condition" src={WinCaptureBase} />
           <p>Capture Opponent Base</p>
         </div>
       </div>
       <p>
-        You can win by either capturing the opponent's Captain or by Capturing
+        You can win by either capturing the opponent{"'"}s Captain or by Capturing
         their base.
       </p>
     </motion.div>

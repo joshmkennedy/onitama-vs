@@ -1,45 +1,10 @@
 import { GameState, Position, Unit } from "./types";
-import { inverseMovePositions } from "./utils";
-import cardlist from "./cards";
-import { atom, useAtom } from "jotai";
-
-function getRandomCards() {
-	if (typeof window === 'undefined') return
-	const cards = cardlist.sort(() => Math.floor(Math.random() - 0.5));
-	cards.length = 5;
-	return cards;
-}
-
-function getInitialState(): GameState {
-	return {
-		currentPlayer: 1,
-		cards: getRandomCards() ?? [],
-		player1Cards: [0, 1],
-		player1NextCard: 2,
-		player2NextCard: null,
-		player2Cards: [3, 4],
-		player1Units: [
-			{ id: 1, type: "pawn", position: { x: 0, y: 0 }, owner: 1 },
-			{ id: 2, type: "pawn", position: { x: 1, y: 0 }, owner: 1 },
-			{ id: 3, type: "captain", position: { x: 2, y: 0 }, owner: 1 },
-			{ id: 4, type: "pawn", position: { x: 3, y: 0 }, owner: 1 },
-			{ id: 5, type: "pawn", position: { x: 4, y: 0 }, owner: 1 },
-		],
-		player2Units: [
-			{ id: 6, type: "pawn", position: { x: 0, y: 4 }, owner: 2 },
-			{ id: 7, type: "pawn", position: { x: 1, y: 4 }, owner: 2 },
-			{ id: 8, type: "captain", position: { x: 2, y: 4 }, owner: 2 },
-			{ id: 9, type: "pawn", position: { x: 3, y: 4 }, owner: 2 },
-			{ id: 10, type: "pawn", position: { x: 4, y: 4 }, owner: 2 },
-		],
-	};
-}
+import { atom } from "jotai";
 
 export const selectedCardStore = atom<null | number>(null);
 export const selectedPosStore = atom<null | Position>(null);
 export const selectedUnitStore = atom<null | Unit>(null);
 
-const initialState = getInitialState();
 export const gameStateStore = atom<GameState | undefined>(undefined);
 
 export const playerInfoStore = atom<{ gameId: string, playerId: number } | undefined>(undefined)
@@ -147,19 +112,12 @@ export const playerInfoStore = atom<{ gameId: string, playerId: number } | undef
 // 	return playTurn;
 // }
 
-function normalizePositions(
-	currentPlayer: "player1" | "player2",
-	positions: Position[],
-) {
-	if (currentPlayer == "player2") {
-		return positions;
-	}
-	return inverseMovePositions(positions);
-}
-
-const playerOneBase = { x: 2, y: 0 };
-const playerTwoBase = { x: 2, y: 4 };
-function isOpponentsBase(position: Position, currentPlayer: 1 | 2) {
-	const opponentBase = currentPlayer == 1 ? playerTwoBase : playerOneBase;
-	return position.x == opponentBase.x && opponentBase.y == position.y;
-}
+// function normalizePositions(
+// 	currentPlayer: "player1" | "player2",
+// 	positions: Position[],
+// ) {
+// 	if (currentPlayer == "player2") {
+// 		return positions;
+// 	}
+// 	return inverseMovePositions(positions);
+// }

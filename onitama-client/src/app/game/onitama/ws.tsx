@@ -1,6 +1,7 @@
+"use client"
 import { useEffect } from "react";
 
-const gameId = new URLSearchParams(window.location.search).get("gameId");
+const gameId = typeof window != "undefined" && new URLSearchParams(window.location.search).get("gameId");
 let ws: WebSocket;
 export function useWS(messageHandler: (msg: any) => void) {
 	useEffect(() => {

@@ -11,7 +11,7 @@ import { gameStateStore, playerInfoStore } from "./state";
 import { useAtom } from "jotai";
 
 function App() {
-	const [isHelpShowing, setIsHelpShowing] = useState(!true);
+	const [isHelpShowing, setIsHelpShowing] = useState(false);
 	const [winner, setWinner] = useState<1 | 2 | 0>(0);
 	function showWinner(winner: 1 | 2 | 0) {
 		setWinner(winner);
@@ -52,7 +52,7 @@ function App() {
 				console.log(data.payload);
 			}
 		},
-		[setGameState, setWinner],
+		[setGameState, setWinner, setPlayerInfo],
 	);
 	const ws = useWS(messageHandler);
 

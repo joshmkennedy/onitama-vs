@@ -1,4 +1,4 @@
-export default [
+const cards = [
   {
     name: "Boar",
     positions: [
@@ -116,3 +116,5 @@ export default [
     ],
   },
 ];
+
+export default cards

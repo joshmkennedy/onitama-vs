@@ -1,4 +1,5 @@
 import type { Unit } from "./types";
+
 export function Tile({
   classes,
   onClick,
@@ -25,6 +26,7 @@ export function Tile({
     >
       {owner ? (
         <img
+					alt={`Player ${owner.owner}\'s ${owner.type}`}
           className="unit-image"
           src={`/Player${owner.owner}-${owner.type}.png`}
         />
