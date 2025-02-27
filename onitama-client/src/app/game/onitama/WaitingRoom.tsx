@@ -6,7 +6,7 @@ export function WaitingRoom({ playerId }: { playerId: number }) {
   return (
     <div className="waiting-room">
       <h1>Waiting For the other player</h1>
-      <p>You are player {playerId}</p>
+      <p>Send them the url if you haven{'\''}t </p>
       <CopyText value={URL || ""} />
     </div>
   );

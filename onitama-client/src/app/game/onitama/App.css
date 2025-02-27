@@ -54,7 +54,6 @@ body *::before {
 
 @media (max-width: 1000px) {
 	.board-wrapper {
-
 		grid-template-columns: 150px 1fr 150px;
 	}
 }
@@ -110,25 +109,24 @@ body *::before {
 	aspect-ratio: 1;
 }
 
-
 .next-card {
-	max-width:175px;
-	width:100%;
-	height:100%;
+	max-width: 175px;
+	width: 100%;
+	height: 100%;
 	container: card-container / size;
-	display:flex;
-	flex-direction:column;
+	display: flex;
+	flex-direction: column;
 }
 
 .left-next {
 	grid-area: leftNext;
-	margin-left:auto;
+	margin-left: auto;
 }
 
 .right-next {
 	grid-area: rightNext;
-	justify-content:flex-end;
-	margin-right:auto;
+	justify-content: flex-end;
+	margin-right: auto;
 }
 
 .next-card .card {
@@ -168,18 +166,19 @@ body *::before {
 	transform: translate(-50%, -50%);
 }
 
-
 .player-cards {
 	width: 100%;
 	margin-inline: auto;
 	display: flex;
 	justify-content: center;
 	gap: 10px;
-	@media(max-width:800px){
-		flex-wrap:wrap;
-		justify-content:end;
-		&.player-2{
-			justify-content:start;
+
+	@media (max-width: 800px) {
+		flex-wrap: wrap;
+		justify-content: end;
+
+		&.player-2 {
+			justify-content: start;
 		}
 	}
 }
@@ -191,7 +190,6 @@ body *::before {
 .player-cards.player-2 {
 	grid-area: player2cards;
 }
-
 
 .card {
 	max-height: 100%;
@@ -219,21 +217,22 @@ body *::before {
 	}
 
 	.next-card {
-		flex-direction:row;
+		flex-direction: row;
+
 		.next-card-label {
 			writing-mode: vertical-rl;
-			margin-block:0;
+			margin-block: 0;
 		}
+
 		&.right-next {
-			justify-content:unset;
-			flex-direction:row-reverse
+			justify-content: unset;
+			flex-direction: row-reverse;
 		}
 	}
 
 	.card {
 		justify-content: center;
 	}
-
 }
 
 .card h3 {
@@ -247,12 +246,13 @@ body *::before {
 		flex-direction: column;
 		height: unset;
 		aspect-ratio: unset;
-		
+
 		h3 {
 			writing-mode: unset;
 		}
+
 		.card-grid {
-			width:100%;
+			width: 100%;
 		}
 	}
 }
@@ -366,4 +366,31 @@ body:has(.help) .App {
 	top: 1rem;
 	right: 1rem;
 	font-weight: bold;
+}
+
+.waiting-room {
+	max-width:600px;
+	margin-inline:auto;
+	text-align: center;
+	padding: 20px;
+	padding-top:25vh;
+
+	h1 {
+		font-size: 45px;
+	}
+
+	p {
+		font-weight: bold;
+		margin-top: 40px;
+	}
+}
+
+.copy-text {
+	display: flex;
+	justify-content: center;
+	gap: 4px;
+
+	input {
+		width: 100%;
+	}
 }
