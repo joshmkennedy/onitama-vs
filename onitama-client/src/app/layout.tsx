@@ -24,6 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <link rel="icon shortcut" href="/Player1-captain.png" />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>
