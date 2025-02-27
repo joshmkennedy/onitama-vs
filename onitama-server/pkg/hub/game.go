@@ -19,7 +19,7 @@ func (g *Game) HandleMessage(message *Message) (uint8, []byte, error) {
 	}
 
 	if len(g.Clients) < 2 {
-		return message.From, sendMessage("Waiting for other player to join"), nil
+		return 0, sendGameInfoUpdateMessage(g.Id, len(g.Clients)), nil
 	}
 
 	// MAIN GAME LOGIC HAPPENS IN HERE 👇
@@ -27,11 +27,11 @@ func (g *Game) HandleMessage(message *Message) (uint8, []byte, error) {
 
 	if result == game.NEW_GAME {
 		g.State = game.NewGameState()
-        g.State.Status = game.STATUS_PLAYING
+		g.State.Status = game.STATUS_PLAYING
 		return 0, sendNewGameState(g.State), nil
 	}
 	if result == game.WON_STATE_REACHED {
-        g.State.Status = game.STATUS_WON
+		g.State.Status = game.STATUS_WON
 		return 0, sendEndGameMessage(g.State), nil
 	}
 	if result == game.INVALID_UNIT {
@@ -70,16 +70,43 @@ func sendGameState(state *game.GameState) []byte {
 	return jsonState
 }
 
-type WelcomePayload struct {
-	PlayerId uint8  `json:"playerId"`
-	GameId   string `json:"gameId"`
+type GameInfo struct {
+	GameId      string `json:"gameId"`
+	PlayerCount int    `json:"playerCount"`
+}
+type PlayerInfo struct {
+	PlayerId uint8 `json:"playerId"`
 }
 
-func sendWelcomeMessage(playerId uint8, gameId string) []byte {
+type WelcomePayload struct {
+	PlayerInfo `json:"playerInfo"`
+	GameInfo   `json:"gameInfo"`
+}
+
+func sendWelcomeMessage(playerId uint8, gameId string, playerCount int) []byte {
 	jsonMsg, err := json.Marshal(GameMessage{Payload: WelcomePayload{
-		PlayerId: playerId,
-		GameId:   gameId,
+		PlayerInfo: PlayerInfo{
+			PlayerId: playerId,
+		},
+		GameInfo: GameInfo{
+			GameId:      gameId,
+			PlayerCount: playerCount,
+		},
 	}, MsgType: "welcome"})
+	if err != nil {
+		return []byte{}
+	}
+	return jsonMsg
+}
+
+func sendGameInfoUpdateMessage(gameId string, playerCount int) []byte {
+	jsonMsg, err := json.Marshal(GameMessage{
+		Payload: GameInfo{
+			GameId:      gameId,
+			PlayerCount: playerCount,
+		},
+		MsgType: "gameInfoUpdate",
+	})
 	if err != nil {
 		return []byte{}
 	}

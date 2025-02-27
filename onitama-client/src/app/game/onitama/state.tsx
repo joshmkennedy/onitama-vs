@@ -7,7 +7,13 @@ export const selectedUnitStore = atom<null | Unit>(null);
 
 export const gameStateStore = atom<GameState | undefined>(undefined);
 
-export const playerInfoStore = atom<{ gameId: string, playerId: number } | undefined>(undefined)
+export const playerInfoStore = atom<{ playerId: number } | undefined>(
+  undefined,
+);
+
+export const gameInfoStore = atom<
+  { gameId: string; playerCount: number } | undefined
+>(undefined);
 
 // export function usePlayTurn() {
 // 	const [gameState, setGameState] = useAtom(gameStateStore);

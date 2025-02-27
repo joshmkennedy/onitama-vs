@@ -48,16 +48,15 @@ func (h *Hub) Run() {
 		case client := <-h.register:
 			h.JoinGame(client, client.gameId)
 
-
 		case client := <-h.unregister:
 			if _, ok := h.games[client.gameId].Clients[client]; ok {
-				delete(h.games[client.gameId].Clients, client)
+                h.LeaveGame(client, client.gameId)
 				close(client.send)
 			}
 
 		case message := <-h.broadcast:
 			if g, ok := h.games[message.GameId]; ok {
-                // to is plyayerId to send to or 0 for all
+				// to is plyayerId to send to or 0 for all
 				to, reply, err := g.HandleMessage(message)
 				if err != nil {
 					log.Println("Error handling message ")
@@ -152,26 +151,33 @@ func (h *Hub) JoinGame(client *Client, gameId string) {
 	client.PlayerId = getNextPlayerId(h.games[client.gameId].Clients)
 	h.games[client.gameId].Clients[client] = true
 
-	client.send <- sendMessage("You have joined " + client.gameId + " as Player " + string(client.PlayerId))
-	// client.send <- sendGameState(h.games[client.gameId].State)
-    client.send <- sendWelcomeMessage(client.PlayerId, client.gameId)
+	playerCount := len(h.games[gameId].Clients)
 
-    if len(h.games[client.gameId].Clients) == 2 {
-        h.games[client.gameId].State.Status = game.STATUS_PLAYING
-        for client := range h.games[client.gameId].Clients {
-            client.send <- sendGameState(h.games[client.gameId].State)
-        }
-    }
+	client.send <- sendMessage("You have joined " + client.gameId + " as Player " + string(client.PlayerId))
+	client.send <- sendWelcomeMessage(client.PlayerId, client.gameId, playerCount)
+
+	if len(h.games[client.gameId].Clients) == 2 {
+		h.games[client.gameId].State.Status = game.STATUS_PLAYING
+		for client := range h.games[client.gameId].Clients {
+			client.send <- sendGameState(h.games[client.gameId].State)
+			client.send <- sendGameInfoUpdateMessage(gameId, playerCount)
+		}
+	}
 	log.Println("Joined game: ", client.gameId)
 }
 
 func (h *Hub) LeaveGame(client *Client, gameId string) {
 	if game, ok := h.games[gameId]; ok {
 		delete(game.Clients, client)
-		if len(game.Clients) == 0 {
-			delete(h.games, gameId) // Remove empty game
-		}
+		playerCount := len(game.Clients)
 
+		if playerCount == 0 {
+			delete(h.games, gameId) // Remove empty game
+		} else {
+			for client := range game.Clients {
+				client.send <- sendGameInfoUpdateMessage(gameId, playerCount)
+			}
+		}
 		client.gameId = ""
 		log.Println("Left game: ", gameId)
 	}
@@ -180,10 +186,10 @@ func (h *Hub) LeaveGame(client *Client, gameId string) {
 // We only ever have 2 players
 // so dis is ok
 func getNextPlayerId(clients map[*Client]bool) uint8 {
-    for client := range clients {
-        if client.PlayerId == 1 {
-            return 2;
-        }
-    }
-    return 1
+	for client := range clients {
+		if client.PlayerId == 1 {
+			return 2
+		}
+	}
+	return 1
 }

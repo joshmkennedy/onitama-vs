@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { GameState, Position, Unit } from "./types";
 import {
+    gameStateStore,
   selectedCardStore,
   selectedPosStore,
   selectedUnitStore,
@@ -14,7 +15,6 @@ import { useAtom } from "jotai";
 const boardGrid = buildGrid(5);
 
 export default function Board({
-  gameState,
   playTurn,
 }: {
   gameState: GameState | undefined;
@@ -24,6 +24,7 @@ export default function Board({
     selectedUnit: number,
   ) => void;
 }) {
+	const [gameState] = useAtom(gameStateStore)
   const [selectedUnit, setSelectedUnit] = useAtom(selectedUnitStore);
   const [selectedPos, setSelectedPos] = useAtom(selectedPosStore);
   const [selectedCard, setSelectedCard] = useAtom(selectedCardStore);
@@ -115,11 +116,11 @@ export default function Board({
     setSelectedUnit(null);
   }, [selectedUnit, selectedPos, selectedCard, playTurn, setSelectedUnit, setSelectedPos, setSelectedCard]);
 
-  if (!gameState?.player1Units) {
-    return "yo mamma";
+  if (!gameState?.player1Units || !gameState?.player2Units) {
+    return null;
   } else {
-    // console.log(gameState)
-  }
+		console.log(gameState)
+	}
 
   return (
     <div className="board-wrapper">
@@ -168,6 +169,7 @@ function findOwner(
   player1Units: Unit[],
   player2Units: Unit[],
 ) {
+	if(!player1Units.length || !player2Units.length) return null
   for (const unit of player1Units) {
     if (
       unit.position.x == position.x &&
