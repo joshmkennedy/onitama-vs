@@ -21,6 +21,19 @@ body *::before {
 	overflow-y: hidden;
 	display: flex;
 	flex-direction: column;
+
+	background-size:33vw 33vw;
+	background-repeat:no-repeat;
+
+}
+
+.App.player-1-turn {
+	background-position:center 0%;
+	background-image:radial-gradient(circle at 50% -10%, #C22120 0px, transparent 30%);
+}
+.App.player-2-turn {
+	background-position:center 100%;
+	background-image:radial-gradient(circle at 50% 110%, #2375C2 0px, transparent 30%);
 }
 
 .app-header {
@@ -206,6 +219,9 @@ body *::before {
 	justify-content: space-between;
 	aspect-ratio: 5/3;
 }
+.card.opponents-card{
+	cursor: not-allowed;
+}
 
 @media (max-width: 800px) {
 	.card {
@@ -232,6 +248,17 @@ body *::before {
 
 	.card {
 		justify-content: center;
+	}
+}
+
+@media(max-width: 380px){
+
+	.next-card:is(.right-next, .left-next) {
+		flex-direction: column;
+		.next-card-label {
+			writing-mode: unset;
+			margin-block: unset;
+		}
 	}
 }
 

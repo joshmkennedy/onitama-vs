@@ -1,7 +1,7 @@
 import * as React from "react";
-import type { GameState, Position, Unit } from "./types";
+import type { Position, Unit } from "./types";
 import {
-    gameStateStore,
+  gameStateStore,
   selectedCardStore,
   selectedPosStore,
   selectedUnitStore,
@@ -17,14 +17,13 @@ const boardGrid = buildGrid(5);
 export default function Board({
   playTurn,
 }: {
-  gameState: GameState | undefined;
   playTurn: (
     selectedPos: Position,
     selectedCard: number,
     selectedUnit: number,
   ) => void;
 }) {
-	const [gameState] = useAtom(gameStateStore)
+  const [gameState] = useAtom(gameStateStore);
   const [selectedUnit, setSelectedUnit] = useAtom(selectedUnitStore);
   const [selectedPos, setSelectedPos] = useAtom(selectedPosStore);
   const [selectedCard, setSelectedCard] = useAtom(selectedCardStore);
@@ -114,13 +113,21 @@ export default function Board({
     setSelectedCard(null);
     setSelectedPos(null);
     setSelectedUnit(null);
-  }, [selectedUnit, selectedPos, selectedCard, playTurn, setSelectedUnit, setSelectedPos, setSelectedCard]);
+  }, [
+    selectedUnit,
+    selectedPos,
+    selectedCard,
+    playTurn,
+    setSelectedUnit,
+    setSelectedPos,
+    setSelectedCard,
+  ]);
 
   if (!gameState?.player1Units || !gameState?.player2Units) {
     return null;
   } else {
-		console.log(gameState)
-	}
+    console.log(gameState);
+  }
 
   return (
     <div className="board-wrapper">
@@ -169,7 +176,7 @@ function findOwner(
   player1Units: Unit[],
   player2Units: Unit[],
 ) {
-	if(!player1Units.length || !player2Units.length) return null
+  if (!player1Units.length || !player2Units.length) return null;
   for (const unit of player1Units) {
     if (
       unit.position.x == position.x &&

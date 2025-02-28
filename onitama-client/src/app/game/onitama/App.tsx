@@ -87,6 +87,7 @@ function App() {
     );
   }
 
+	const currentPlayerIndicatorClass = `player-${gameState?.currentPlayer}-turn`
 
   return (
     <>
@@ -100,7 +101,7 @@ function App() {
 
       {/* GAME */}
       {gameState && gameInfo && gameInfo.playerCount >= 2 ? (
-        <div className="App">
+        <div className={`App ${currentPlayerIndicatorClass}`}>
           <Header
             winner={winner}
             newGame={resetGame}

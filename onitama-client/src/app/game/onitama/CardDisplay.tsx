@@ -1,6 +1,8 @@
 import { buildGrid } from "./Board";
 import type { Card } from "./types";
 import { isCenter, isPossibleMove } from "./utils";
+import { playerInfoStore } from "./state";
+import { useAtom } from "jotai";
 
 const cardGrid = buildGrid(5);
 export default function CardDisplay({
@@ -14,9 +16,14 @@ export default function CardDisplay({
   handleClick?: () => void;
   card?: Card;
 }) {
+  const [playerInfo] = useAtom(playerInfoStore);
   if (!card) return null;
+  const playersCard = playerInfo?.playerId === owner;
   return (
-    <div className={`card ${classes}`} onClick={handleClick}>
+    <div
+      className={`card ${classes} ${playersCard ? `players-card` : "opponents-card"}`}
+      onClick={handleClick}
+    >
       <h3>{card.name}</h3>
       <div className="card-grid">
         {cardGrid.map((row, y) => {

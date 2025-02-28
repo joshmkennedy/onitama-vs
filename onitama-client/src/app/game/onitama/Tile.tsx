@@ -1,4 +1,3 @@
-"use client"
 import type { Unit } from "./types";
 
 export function Tile({
