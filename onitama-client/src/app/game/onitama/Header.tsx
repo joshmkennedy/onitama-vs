@@ -4,12 +4,8 @@ import { useMemo } from "react";
 
 export default function Header({
   showHelp,
-  newGame,
-  winner,
 }: {
   showHelp: () => void;
-  winner: 1 | 2 | 0;
-  newGame: () => void;
 }) {
   const [gameState] = useAtom(gameStateStore);
   const [playerInfo] = useAtom(playerInfoStore);

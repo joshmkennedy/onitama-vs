@@ -32,16 +32,14 @@ export default function Board({
     setSelectedPos(null);
   }
 
-  if (selectedCard == null && selectedUnit != null) {
-    setSelectedUnit(null);
-  }
+  // if (selectedCard == null && selectedUnit != null) {
+  //   setSelectedUnit(null);
+  // }
 
   const movePosHints = React.useMemo(() => {
     if (!gameState) return [];
     if (selectedCard == null || selectedUnit == null) return [];
     const card = gameState.cards[selectedCard];
-    console.log({ selectedCard });
-    console.log(gameState.player1Cards);
     const player = gameState?.currentPlayer;
     const possiblePosisitons =
       player == 2 ? card.positions : inverseMovePositions(card.positions);
@@ -58,22 +56,26 @@ export default function Board({
 
   const chooseTile = React.useCallback(
     function chooseTile(unit: Unit | null, position: Position) {
-      if (!gameState || selectedCard == null) return;
+      if (!gameState /* || selectedCard == null */) return;
 
       if (
         unit?.position.x == selectedUnit?.position.x &&
         selectedUnit?.position.y == unit?.position.y
       ) {
+				console.log("bailing")
         setSelectedUnit(null);
         setSelectedPos(null);
         return;
       }
-
       if (unit && unit.owner == gameState.currentPlayer) {
         setSelectedUnit(unit);
         return;
       }
-
+			
+			// if we get here and we dont have a selected card 
+			// we gotta bail
+			if (selectedCard == null) return;
+		
       if (
         selectedPos &&
         selectedPos.x == position.x &&
@@ -125,9 +127,8 @@ export default function Board({
 
   if (!gameState?.player1Units || !gameState?.player2Units) {
     return null;
-  } else {
-    console.log(gameState);
-  }
+  } 
+	console.log({selectedUnit})
 
   return (
     <div className="board-wrapper">

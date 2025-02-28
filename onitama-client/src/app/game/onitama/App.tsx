@@ -102,6 +102,7 @@ function App() {
             newGame={resetGame}
             showHelp={() => setIsHelpShowing(true)}
           />
+
           <Board playTurn={playTurn} />
 
           {/* Shows quick message when 
