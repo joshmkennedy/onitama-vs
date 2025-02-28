@@ -12,11 +12,8 @@ export function useWS(messageHandler: (msg: any) => void) {
     }
     if (!ws) {
 			console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
-      const host =
-        process.env.NODE_ENV == "development"
-          ? "192.168.68.112:8080"
-          : process.env.NEXT_PUBLIC_BACKEND_URL;
-      ws = new WebSocket("ws://" + host + "/ws?gameId=" + gameId);
+      const host = process.env.NEXT_PUBLIC_BACKEND_URL;
+      ws = new WebSocket(host + "/ws?gameId=" + gameId);
     }
     if (ws) {
       ws.onmessage = messageHandler;
