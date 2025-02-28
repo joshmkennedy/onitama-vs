@@ -12,7 +12,7 @@ body *::before {
 .App {
 	padding: 1rem;
 	padding-top: 0;
-	max-width: 1300px;
+	max-width: 1000px;
 	max-height: 100dvh;
 	width: 100dvw;
 	height: 100dvh;
@@ -22,18 +22,31 @@ body *::before {
 	display: flex;
 	flex-direction: column;
 
-	background-size:33vw 33vw;
-	background-repeat:no-repeat;
+	background-size: 33vw 33vw;
+	background-repeat: no-repeat;
+	font-size: 1.5rem;
 
+	@media (max-width: 800px) {
+		font-size: 1rem;
+	}
+
+	@media (max-width: 500px) {
+		font-size: 0.8rem;
+	}
 }
 
 .App.player-1-turn {
-	background-position:center 0%;
-	background-image:radial-gradient(circle at 50% -10%, #C22120 0px, transparent 30%);
+	background-position: center 0%;
+	background-image: radial-gradient(circle at 50% -10%,
+			#c22120 0px,
+			transparent 30%);
 }
+
 .App.player-2-turn {
-	background-position:center 100%;
-	background-image:radial-gradient(circle at 50% 110%, #2375C2 0px, transparent 30%);
+	background-position: center 100%;
+	background-image: radial-gradient(circle at 50% 110%,
+			#2375c2 0px,
+			transparent 30%);
 }
 
 .app-header {
@@ -42,6 +55,10 @@ body *::before {
 	position: relative;
 	justify-content: center;
 	align-items: center;
+}
+
+.app-header .whos-turn {
+	font-weight: bold;
 }
 
 .app-header button {
@@ -131,6 +148,10 @@ body *::before {
 	flex-direction: column;
 }
 
+.next-card-label {
+	font-size: 1rem;
+}
+
 .left-next {
 	grid-area: leftNext;
 	margin-left: auto;
@@ -218,8 +239,13 @@ body *::before {
 	padding: 0.5em;
 	justify-content: space-between;
 	aspect-ratio: 5/3;
+
+	h3 {
+		font-size: 1rem;
+	}
 }
-.card.opponents-card{
+
+.card.opponents-card {
 	cursor: not-allowed;
 }
 
@@ -251,10 +277,10 @@ body *::before {
 	}
 }
 
-@media(max-width: 380px){
-
+@media (max-width: 380px) {
 	.next-card:is(.right-next, .left-next) {
 		flex-direction: column;
+
 		.next-card-label {
 			writing-mode: unset;
 			margin-block: unset;
@@ -396,11 +422,11 @@ body:has(.help) .App {
 }
 
 .waiting-room {
-	max-width:600px;
-	margin-inline:auto;
+	max-width: 600px;
+	margin-inline: auto;
 	text-align: center;
 	padding: 20px;
-	padding-top:25vh;
+	padding-top: 25vh;
 
 	h1 {
 		font-size: 45px;
@@ -420,4 +446,93 @@ body:has(.help) .App {
 	input {
 		width: 100%;
 	}
+}
+
+.current-game-state-notifier {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	color: #444;
+	justify-content: center;
+	align-items: center;
+	font-size: 2rem;
+	z-index: 999;
+
+	.current-game-state-notifier__contents {
+		font-size: 1rem;
+		background: white;
+		padding: 1rem;
+		border-radius: 10px;
+		width: 300px;
+
+		p:first-child {
+			font-weight: bold;
+		}
+
+		h3 {
+			margin-top: 0;
+			line-height: 1.2;
+		}
+
+		animation: slidein 2s ease-in-out;
+
+		&.end-game {
+			animation: slidein 4s ease-in-out;
+		}
+	}
+}
+
+@keyframes slidein {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	25% {
+		transform: translateX(-10%);
+	}
+
+	75% {
+		transform: translateX(10%);
+	}
+
+	100% {
+		transform: translateX(calc(100vw + 100%));
+	}
+}
+
+.red-text {
+	color: #c22120;
+}
+
+.blue-text {
+	color: #2375c2;
+}
+
+.close {
+	width: 30px;
+	height: 30px;
+	padding:0;
+	line-height:0;
+	aspect-ratio: 1;
+	border-radius: 99999px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+*:has(> .abs-tr) {
+	position: relative;
+}
+
+.abs-tr {
+	position: absolute;
+	top: 10px;
+	right: 10px;
 }

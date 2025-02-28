@@ -3,38 +3,27 @@ import { gameStateStore, playerInfoStore } from "./state";
 import { useMemo } from "react";
 
 export default function Header({
-	showHelp,
-	newGame,
-	winner,
+  showHelp,
+  newGame,
+  winner,
 }: {
-	showHelp: () => void;
-	winner: 1 | 2 | 0;
-	newGame: () => void;
+  showHelp: () => void;
+  winner: 1 | 2 | 0;
+  newGame: () => void;
 }) {
-	const [gameState] = useAtom(gameStateStore);
-	const [playerInfo] = useAtom(playerInfoStore);
-	const currentPlayer = gameState?.currentPlayer;
-	const thisPlayer = playerInfo?.playerId ?? 0;
-	const winnerMessage = useMemo(() => {
-		if (winner === thisPlayer) {
-			return "Congrats!! you won!";
-		}
-		return `Oooh, soo sorry. Player ${winner} won 🙁`;
-	}, [winner, thisPlayer]);
+  const [gameState] = useAtom(gameStateStore);
+  const [playerInfo] = useAtom(playerInfoStore);
+  const currentPlayer = gameState?.currentPlayer;
+  const thisPlayer = playerInfo?.playerId ?? 0;
 
-	return (
-		<header className="app-header">
-			{winner > 0 ? (
-				<>
-					<div>{winnerMessage}</div>
-					<button onClick={newGame}>New Game</button>
-				</>
-			) : (
-				<>
-					<div>Player {currentPlayer}&apos;s Turn</div>
-					<button onClick={showHelp}>?</button>
-				</>
-			)}
-		</header>
-	);
+  const isPlayerTurn = currentPlayer === thisPlayer;
+
+  return (
+    <header className="app-header">
+      <div className="whos-turn">
+        {isPlayerTurn ? "Your turn" : "Waiting for other player"}
+      </div>
+      <button onClick={showHelp}>?</button>
+    </header>
+  );
 }

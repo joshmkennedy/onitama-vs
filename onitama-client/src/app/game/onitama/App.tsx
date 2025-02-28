@@ -10,26 +10,19 @@ import { Position } from "./types";
 import { gameInfoStore, gameStateStore, playerInfoStore } from "./state";
 import { useAtom } from "jotai";
 import { WaitingRoom } from "./WaitingRoom";
+import CurrentGameStateNotifier from "./CurrentGameStateNotifier";
 
 function App() {
   const [isHelpShowing, setIsHelpShowing] = useState(false);
+
   const [winner, setWinner] = useState<1 | 2 | 0>(0);
   function showWinner(winner: 1 | 2 | 0) {
     setWinner(winner);
   }
 
   const [gameState, setGameState] = useAtom(gameStateStore);
-
-  const [playerInfo, setPlayerInfo] = useAtom<
-    | {
-        playerId: number;
-      }
-    | undefined
-  >(playerInfoStore);
-
-  const [gameInfo, setGameInfo] = useAtom<
-    { gameId: string; playerCount: number } | undefined
-  >(gameInfoStore);
+  const [playerInfo, setPlayerInfo] = useAtom(playerInfoStore);
+  const [gameInfo, setGameInfo] = useAtom(gameInfoStore);
 
   const messageHandler = useCallback(
     (message: any) => {
@@ -71,6 +64,7 @@ function App() {
     selectedCard: number,
     selectedUnit: number,
   ) {
+    if (winner > 0) return;
     ws.send(
       JSON.stringify({
         type: "playTurn",
@@ -78,6 +72,7 @@ function App() {
       }),
     );
   }
+
   function resetGame() {
     ws.send(
       JSON.stringify({
@@ -87,7 +82,7 @@ function App() {
     );
   }
 
-	const currentPlayerIndicatorClass = `player-${gameState?.currentPlayer}-turn`
+  const currentPlayerIndicatorClass = `player-${gameState?.currentPlayer}-turn`;
 
   return (
     <>
@@ -108,6 +103,12 @@ function App() {
             showHelp={() => setIsHelpShowing(true)}
           />
           <Board playTurn={playTurn} />
+
+          {/* Shows quick message when 
+						- current player changes		
+						- game ends
+					*/}
+          <CurrentGameStateNotifier winner={winner}/>
         </div>
       ) : null}
     </>
