@@ -61,7 +61,7 @@ body *::before {
 	font-weight: bold;
 }
 
-.app-header button {
+.app-header button.show-help {
 	position: absolute;
 	right: 1rem;
 }

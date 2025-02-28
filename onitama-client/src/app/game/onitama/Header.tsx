@@ -4,8 +4,12 @@ import { useMemo } from "react";
 
 export default function Header({
   showHelp,
+  newGame,
+  winner,
 }: {
   showHelp: () => void;
+  winner: 1 | 2 | 0;
+  newGame: () => void;
 }) {
   const [gameState] = useAtom(gameStateStore);
   const [playerInfo] = useAtom(playerInfoStore);
@@ -16,10 +20,18 @@ export default function Header({
 
   return (
     <header className="app-header">
-      <div className="whos-turn">
-        {isPlayerTurn ? "Your turn" : "Waiting for other player"}
-      </div>
-      <button onClick={showHelp}>?</button>
+      {winner > 0 ? (
+        <>
+          <button onClick={newGame}>New Game</button>
+        </>
+      ) : (
+        <>
+          <div className="whos-turn">
+            {isPlayerTurn ? "Your turn" : "Waiting for other player"}
+          </div>
+          <button className="show-help" onClick={showHelp}>?</button>
+        </>
+      )}
     </header>
   );
 }

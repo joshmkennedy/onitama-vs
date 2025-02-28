@@ -32,10 +32,6 @@ export default function Board({
     setSelectedPos(null);
   }
 
-  // if (selectedCard == null && selectedUnit != null) {
-  //   setSelectedUnit(null);
-  // }
-
   const movePosHints = React.useMemo(() => {
     if (!gameState) return [];
     if (selectedCard == null || selectedUnit == null) return [];
@@ -56,13 +52,13 @@ export default function Board({
 
   const chooseTile = React.useCallback(
     function chooseTile(unit: Unit | null, position: Position) {
-      if (!gameState /* || selectedCard == null */) return;
+      if (!gameState) return;
 
       if (
         unit?.position.x == selectedUnit?.position.x &&
         selectedUnit?.position.y == unit?.position.y
       ) {
-				console.log("bailing")
+        console.log("bailing");
         setSelectedUnit(null);
         setSelectedPos(null);
         return;
@@ -71,11 +67,11 @@ export default function Board({
         setSelectedUnit(unit);
         return;
       }
-			
-			// if we get here and we dont have a selected card 
-			// we gotta bail
-			if (selectedCard == null) return;
-		
+
+      // if we get here and we dont have a selected card
+      // we gotta bail
+      if (selectedCard == null) return;
+
       if (
         selectedPos &&
         selectedPos.x == position.x &&
@@ -127,8 +123,8 @@ export default function Board({
 
   if (!gameState?.player1Units || !gameState?.player2Units) {
     return null;
-  } 
-	console.log({selectedUnit})
+  }
+  console.log({ selectedUnit });
 
   return (
     <div className="board-wrapper">
