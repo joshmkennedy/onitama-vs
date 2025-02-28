@@ -19,15 +19,15 @@
 	padding: 1rem;
 	border-radius: 10px;
 	width: 300px;
+}
 
-	p:first-child {
-		font-weight: bold;
-	}
+.contents p:first-child {
+	font-weight: bold;
+}
 
-	h3 {
-		margin-top: 0;
-		line-height: 1.2;
-	}
+.contents h3 {
+	margin-top: 0;
+	line-height: 1.2;
 }
 
 .turn {

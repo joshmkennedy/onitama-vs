@@ -12,12 +12,10 @@
 	padding: 0.5em;
 	justify-content: space-between;
 	aspect-ratio: 5/3;
-
-	h3 {
-		font-size: 1rem;
-	}
 }
+
 .card h3 {
+	font-size: 1rem;
 	margin: 0;
 	writing-mode: vertical-lr;
 	transform: rotate(360deg);
@@ -29,13 +27,13 @@
 		height: unset;
 		aspect-ratio: unset;
 
-		h3 {
-			writing-mode: unset;
-		}
-
 		.cardGrid {
 			width: 100%;
 		}
+	}
+
+	.card h3 {
+		writing-mode: unset;
 	}
 }
 
@@ -83,6 +81,3 @@
 .opponentsCard {
 	cursor: not-allowed;
 }
-
-
-

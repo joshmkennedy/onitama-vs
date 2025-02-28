@@ -2,8 +2,8 @@
 	display: flex;
 	justify-content: center;
 	gap: 4px;
+}
 
-	input {
-		width: 100%;
-	}
+.copyText input {
+	width: 100%;
 }
