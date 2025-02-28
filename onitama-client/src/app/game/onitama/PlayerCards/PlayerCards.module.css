@@ -1,0 +1,29 @@
+.playerCards {
+	width: 100%;
+	margin-inline: auto;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+
+	@media (max-width: 800px) {
+		flex-wrap: wrap;
+		justify-content: end;
+
+		&.player2 {
+			justify-content: start;
+		}
+	}
+}
+
+.selectedCard {
+	border: 5px solid #884e83;
+}
+
+
+.player1 {
+	grid-area: player1cards;
+}
+
+.player2 {
+	grid-area: player2cards;
+}

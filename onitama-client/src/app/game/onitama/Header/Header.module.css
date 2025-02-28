@@ -1,0 +1,16 @@
+.appHeader {
+	padding-block: 1rem;
+	display: flex;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+}
+
+.whosTurn {
+	font-weight: bold;
+}
+
+.showHelp {
+	position: absolute;
+	right: 1rem;
+}

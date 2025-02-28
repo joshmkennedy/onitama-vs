@@ -1,7 +1,6 @@
 import { useAtom } from "jotai";
-import { gameStateStore, playerInfoStore } from "./state";
-import { useMemo } from "react";
-
+import { gameStateStore, playerInfoStore } from "../state";
+import styles from "./Header.module.css";
 export default function Header({
   showHelp,
   newGame,
@@ -19,17 +18,17 @@ export default function Header({
   const isPlayerTurn = currentPlayer === thisPlayer;
 
   return (
-    <header className="app-header">
+    <header className={styles.appHeader}>
       {winner > 0 ? (
-        <>
-          <button onClick={newGame}>New Game</button>
-        </>
+        <button onClick={newGame}>New Game</button>
       ) : (
         <>
-          <div className="whos-turn">
+          <div className={styles.whosTurn}>
             {isPlayerTurn ? "Your turn" : "Waiting for other player"}
           </div>
-          <button className="show-help" onClick={showHelp}>?</button>
+          <button className={styles.showHelp} onClick={showHelp}>
+            ?
+          </button>
         </>
       )}
     </header>

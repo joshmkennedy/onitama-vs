@@ -1,0 +1,55 @@
+.nextCard {
+	max-width: 175px;
+	width: 100%;
+	height: 100%;
+	container: card-container / size;
+	display: flex;
+	flex-direction: column;
+	&>div {
+		width: 100%;
+	}
+}
+
+@media (max-width: 380px) {
+	.nextCard:is(.rightNext, .leftNext) {
+		flex-direction: column;
+
+		.nextCardLabel {
+			writing-mode: unset;
+			margin-block: unset;
+		}
+	}
+}
+
+.nextCardLabel {
+	font-size: 1rem;
+}
+
+.leftNext {
+	grid-area: leftNext;
+	margin-left: auto;
+}
+
+.rightNext {
+	grid-area: rightNext;
+	justify-content: flex-end;
+	margin-right: auto;
+}
+
+@media (max-width: 800px) {
+	.nextCard {
+		flex-direction: row;
+
+		.nextCardLabel {
+			writing-mode: vertical-rl;
+			margin-block: 0;
+		}
+
+		&.rightNext {
+			justify-content: unset;
+			flex-direction: row-reverse;
+		}
+	}
+
+}
+

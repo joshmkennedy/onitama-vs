@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import styles from "./CopyText.module.css";
+
 export function CopyText({ value }: { value: string }) {
   const [btnText, setBtnText] = useState("Copy");
   function copy() {
@@ -12,7 +14,7 @@ export function CopyText({ value }: { value: string }) {
       });
   }
   return (
-    <div className="copy-text">
+    <div className={styles.copyText}>
       <input type="text" readOnly={true} value={value} />
       <button className="btn copy-button" onClick={copy}>
         {btnText}

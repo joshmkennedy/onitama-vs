@@ -1,16 +1,17 @@
 "use client";
-
 import { useCallback, useState } from "react";
-import "./App.css";
-import Board from "./Board";
-import Header from "./Header";
-import Help from "./Help";
-import { useWS } from "./ws";
+import { useAtom } from "jotai";
+
 import { Position } from "./types";
 import { gameInfoStore, gameStateStore, playerInfoStore } from "./state";
-import { useAtom } from "jotai";
-import { WaitingRoom } from "./WaitingRoom";
-import CurrentGameStateNotifier from "./CurrentGameStateNotifier";
+import { useWS } from "./ws";
+
+import "./App.css";
+import Board from "./Board/Board";
+import Header from "./Header/Header";
+import Help from "./Help/Help";
+import { WaitingRoom } from "./WaitingRoom/WaitingRoom";
+import CurrentGameStateNotifier from "./CurrentGameStateNotifier/CurrentGameStateNotifier";
 
 function App() {
   const [isHelpShowing, setIsHelpShowing] = useState(false);
@@ -109,7 +110,7 @@ function App() {
 						- current player changes		
 						- game ends
 					*/}
-          <CurrentGameStateNotifier winner={winner}/>
+          <CurrentGameStateNotifier winner={winner} />
         </div>
       ) : null}
     </>

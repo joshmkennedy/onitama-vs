@@ -1,16 +1,19 @@
 import * as React from "react";
-import type { Position, Unit } from "./types";
+import { useAtom } from "jotai";
+import type { Position, Unit } from "../types";
 import {
   gameStateStore,
   selectedCardStore,
   selectedPosStore,
   selectedUnitStore,
-} from "./state";
-import { Tile } from "./Tile";
-import { PlayerCards } from "./PlayerCards";
-import NextCard from "./NextCard";
-import { inverseMovePositions, onBoard } from "./utils";
-import { useAtom } from "jotai";
+} from "../state";
+import { inverseMovePositions, onBoard } from "../utils";
+
+import styles from "./Board.module.css";
+
+import { Tile } from "../Tile/Tile";
+import { PlayerCards } from "../PlayerCards/PlayerCards";
+import NextCard from "../NextCard/NextCard";
 
 const boardGrid = buildGrid(5);
 
@@ -124,16 +127,15 @@ export default function Board({
   if (!gameState?.player1Units || !gameState?.player2Units) {
     return null;
   }
-  console.log({ selectedUnit });
 
   return (
-    <div className="board-wrapper">
+    <div className={styles.boardWrapper}>
       <PlayerCards
         player={1}
         selected={selectedCard}
         setSelected={setSelectedCard}
       />
-      <div className="board">
+      <div className={styles.board}>
         {boardGrid.map((row, y: number) => {
           return row.map((_col, x: number) => {
             const owner = findOwner(
@@ -150,7 +152,7 @@ export default function Board({
                 onClick={() => chooseTile(owner, { x, y })}
                 key={`${x}, ${y} `}
                 owner={owner}
-                classes={`${isMoveHint({ x, y }, movePosHints) ? "move-hint" : ""}`}
+                isMoveHint={isMoveHint({ x, y }, movePosHints)}
                 handlePlayTurn={handlePlayTurn}
               />
             );

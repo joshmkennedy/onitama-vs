@@ -1,0 +1,16 @@
+.waitingRoom {
+	max-width: 600px;
+	margin-inline: auto;
+	text-align: center;
+	padding: 20px;
+	padding-top: 25vh;
+
+	h1 {
+		font-size: 45px;
+	}
+
+	p {
+		font-weight: bold;
+		margin-top: 40px;
+	}
+}

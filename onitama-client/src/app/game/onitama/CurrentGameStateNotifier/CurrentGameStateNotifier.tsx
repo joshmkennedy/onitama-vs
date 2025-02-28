@@ -1,11 +1,7 @@
 import { useAtom } from "jotai";
-import { gameStateStore, playerInfoStore, gameInfoStore } from "./state";
+import styles from "./CurrentGameStateNotifier.module.css";
+import { gameStateStore, playerInfoStore } from "../state";
 import { useCallback, useEffect, useRef, useState } from "react";
-
-type MessageConfig = {
-  message: string;
-  duration: number;
-};
 
 const PLAYER_TURN = "PLAYER_TURN";
 const WAITING = "WAITING_FOR_OTHER_PLAYER";
@@ -81,21 +77,21 @@ export default function CurrentGameStateNotifier({
 
   if (currentMessage) {
     return (
-      <div className="current-game-state-notifier">
+      <div className={styles.currentGameStateNotifier}>
         {currentMessage === PLAYER_TURN ? (
-          <div className="current-game-state-notifier__contents">
+          <div className={`${styles.contents} ${styles.turn}`}>
             <p className={`${currentColor}-text`}>{currentColor}</p>
             <h3>Your turn</h3>
           </div>
         ) : null}
         {currentMessage === WAITING ? (
-          <div className="current-game-state-notifier__contents">
+          <div className={`${styles.contents} ${styles.turn}`}>
             <p className={`${currentColor}-text`}>{currentColor}</p>
             <h3>Waiting for other player</h3>
           </div>
         ) : null}
         {currentMessage === WON ? (
-          <div className="current-game-state-notifier__contents end-game">
+          <div className={`${styles.contents} ${styles.endGame}`}>
             <button onClick={dissmiss} className="close abs-tr">
               &times;
             </button>
@@ -109,7 +105,7 @@ export default function CurrentGameStateNotifier({
           </div>
         ) : null}
         {currentMessage === LOST ? (
-          <div className="current-game-state-notifier__contents end-game">
+          <div className={`${styles.contents} ${styles.endGame}`}>
             <button onClick={dissmiss} className="close abs-tr">
               &times;
             </button>

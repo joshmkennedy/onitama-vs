@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import styles from "./Help.module.css";
+
 const boardLayoutImage = "/board-layout.png";
 const basesImage = "/Bases.png";
 const PlayTurnWalkthrough = "/Play-Turn-Walkthrough.png";
@@ -15,21 +17,24 @@ export default function Help({ close }: { close: () => void }) {
   const prev = () => setI((prev) => (prev == 0 ? slides.length - 1 : prev - 1));
   const Current = slides[i];
   return (
-    <div className="help">
-      <h2>How to play</h2>
-      <button className="close" onClick={close}>
-        &times;
-      </button>
-      <div className="slider">
-        <AnimatePresence>
-          <Current />
-        </AnimatePresence>
+    <>
+      <div className={styles.bg}></div>
+      <div className={styles.help}>
+        <h2>How to play</h2>
+        <button className="close abs-tr" onClick={close}>
+          &times;
+        </button>
+        <div className={styles.slide}>
+          <AnimatePresence>
+            <Current />
+          </AnimatePresence>
+        </div>
+        <div className={styles.buttonRow}>
+          <button onClick={prev}>Previous</button>
+          <button onClick={next}>Next</button>
+        </div>
       </div>
-      <div className="Help__button-row">
-        <button onClick={prev}>Previous</button>
-        <button onClick={next}>Next</button>
-      </div>
-    </div>
+    </>
   );
 }
 const motionSettings = {
@@ -84,10 +89,7 @@ const slides = [
     <motion.div className="slide" {...motionSettings} key={4}>
       <h3>The Players Turn</h3>
       <div className="image">
-        <img
-          src={PlayTurnWalkthrough}
-          alt="An example of a turn in onitama"
-        />
+        <img src={PlayTurnWalkthrough} alt="An example of a turn in onitama" />
       </div>
       <p>
         On the players turn. They will first select the card they wish to use
@@ -114,8 +116,8 @@ const slides = [
         </div>
       </div>
       <p>
-        You can win by either capturing the opponent{"'"}s Captain or by Capturing
-        their base.
+        You can win by either capturing the opponent{"'"}s Captain or by
+        Capturing their base.
       </p>
     </motion.div>
   ),

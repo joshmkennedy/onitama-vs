@@ -1,7 +1,8 @@
 import { useAtom } from "jotai";
 import * as React from "react";
-import CardDisplay from "./CardDisplay";
-import { gameStateStore } from "./state";
+import { gameStateStore } from "../state";
+import CardDisplay from "../CardDisplay/CardDisplay";
+import styles from "./NextCard.module.css";
 
 export default function NextCard({ player }: { player: 1 | 2 }) {
   const [gameState] = useAtom(gameStateStore);
@@ -10,10 +11,10 @@ export default function NextCard({ player }: { player: 1 | 2 }) {
   const nextCardIndex = gameState[playerNexCardKey(player)];
   if (nextCardIndex == null) return null;
   const card = gameState.cards[nextCardIndex];
-  const side = player == 1 ? "left-next" : "right-next";
+  const side = player == 1 ? styles.leftNext : styles.rightNext;
   return (
-    <div className={`${side} next-card`}>
-      <p className="next-card-label">Next</p>
+    <div className={`${side} ${styles.nextCard}`}>
+      <p className={ styles.nextCardLabel }>Next</p>
       <CardDisplay classes={``} owner={player} card={card} />
     </div>
   );

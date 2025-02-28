@@ -1,8 +1,9 @@
 import { SetStateAction, useAtom } from "jotai";
-import CardDisplay from "./CardDisplay";
-import { gameStateStore } from "./state";
-import { Card } from "./types";
-import { playerCardsKey } from "./utils";
+import { gameStateStore } from "../state";
+import { playerCardsKey } from "../utils";
+import { Card } from "../types";
+import styles from "./PlayerCards.module.css";
+import CardDisplay from "../CardDisplay/CardDisplay";
 
 type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
 
@@ -23,11 +24,11 @@ export function PlayerCards({
 		return [gameState.cards[cardIndex], cardIndex];
 	});
 	return (
-		<div className={`player-${player} player-cards`}>
+		<div className={`${styles[`player${player}`]} ${styles.playerCards}`}>
 			{cards.map((card) => (
 				<CardDisplay
 					key={card[1]}
-					classes={selected == card[1] ? `selected-card` : ""}
+					classes={selected == card[1] ? styles.selectedCard : ""}
 					handleClick={
 						currentPlayer == player
 							? () => {

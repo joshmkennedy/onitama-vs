@@ -1,7 +1,8 @@
-import type { Unit } from "./types";
+import type { Unit } from "../types";
 
+import styles from "./Tile.module.css";
 export function Tile({
-  classes,
+  isMoveHint,
   onClick,
   handlePlayTurn,
   owner,
@@ -9,7 +10,7 @@ export function Tile({
   isSelectedUnit,
 }: {
   handlePlayTurn: () => void;
-  classes: string;
+  isMoveHint: boolean;
   onClick: () => void;
   owner: null | Unit;
   isSelectedPos: boolean;
@@ -18,22 +19,18 @@ export function Tile({
   return (
     <div
       onClick={onClick}
-      className={`${owner ? `player-${owner.owner}` : ""} ${
-        owner ? `type-${owner.type}` : ""
-      } ${isSelectedUnit ? "selected-unit" : ""} ${
-        isSelectedPos ? "selected-pos" : ""
-      } ${classes}`.trim()}
+      className={`${owner ? styles[`type${owner.type}`] : ""} ${isSelectedUnit ? styles.selectedUnit : ""} ${isSelectedPos ? styles.selectedPos : ""} ${isMoveHint ? styles.moveHint : ""}`.trim()}
     >
       {owner ? (
         <img
-					alt={`Player ${owner.owner}\'s ${owner.type}`}
-          className="unit-image"
+          alt={`Player ${owner.owner}\'s ${owner.type}`}
+          className={styles.unitimage}
           src={`/Player${owner.owner}-${owner.type}.png`}
         />
       ) : null}
       {isSelectedPos ? (
         <button
-          className="tile__confirm-button"
+          className={styles.confirmButton}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
