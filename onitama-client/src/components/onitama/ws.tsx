@@ -1,4 +1,3 @@
-"use client";
 import { useEffect } from "react";
 
 const gameId =
@@ -24,7 +23,7 @@ export function useWS({
 		if (!ws) {
 			console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
 			const host = process.env.NEXT_PUBLIC_BACKEND_URL;
-			ws = new WebSocket(host + "/ws?gameId=" + gameId);
+			ws = new WebSocket(host + `/ws?gameId=${gameId}&kind=${info.gameKind}`);
 		}
 		if (ws) {
 			ws.onmessage = messageHandler;
