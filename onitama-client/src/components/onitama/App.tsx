@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 
 import { Position } from "./types";
 import { gameInfoStore, gameStateStore, playerInfoStore } from "./state";
-import { useWS } from "./ws";
+import { useWS, WSConfigSettings } from "./ws";
 
 import "./App.css";
 import Board from "./Board/Board";
@@ -13,7 +13,14 @@ import Help from "./Help/Help";
 import { WaitingRoom } from "./WaitingRoom/WaitingRoom";
 import CurrentGameStateNotifier from "./CurrentGameStateNotifier/CurrentGameStateNotifier";
 
-function App() {
+
+function App({
+	wsSettings,
+	skipWaitingRoom = false,
+}:{
+	skipWaitingRoom?:boolean,
+	wsSettings:WSConfigSettings
+}) {
   const [isHelpShowing, setIsHelpShowing] = useState(false);
 
   const [winner, setWinner] = useState<1 | 2 | 0>(0);
@@ -58,7 +65,7 @@ function App() {
     },
     [setGameState, setWinner, setPlayerInfo, setGameInfo],
   );
-  const ws = useWS(messageHandler);
+  const ws = useWS({messageHandler, info:wsSettings});
 
   function playTurn(
     selectedPos: Position,
@@ -91,9 +98,14 @@ function App() {
       {isHelpShowing ? <Help close={() => setIsHelpShowing(false)} /> : null}
 
       {/* WAITING ROOM */}
-      {gameInfo && playerInfo && gameInfo.playerCount < 2 ? (
+      {!skipWaitingRoom && gameInfo && playerInfo && gameInfo.playerCount < 2 ? (
         <WaitingRoom playerId={playerInfo?.playerId} />
       ) : null}
+
+			{/*For Singleplayer they just need a loading screen while we send them the game*/}
+			{skipWaitingRoom && gameInfo && playerInfo ? (
+				<p style={{textAlign:"center", marginTop:'20vh'}}>Loading Board...</p>
+			) : null}
 
       {/* GAME */}
       {gameState && gameInfo && gameInfo.playerCount >= 2 ? (
