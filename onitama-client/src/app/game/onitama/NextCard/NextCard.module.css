@@ -36,7 +36,7 @@
 	margin-right: auto;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 820px) {
 	.nextCard {
 		flex-direction: row;
 

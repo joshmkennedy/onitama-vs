@@ -5,7 +5,7 @@
 	justify-content: center;
 	gap: 10px;
 
-	@media (max-width: 800px) {
+	@media (max-width: 820px) {
 		flex-wrap: wrap;
 		justify-content: end;
 
@@ -17,8 +17,23 @@
 
 .selectedCard {
 	border: 5px solid #884e83;
+	animation: selectedCard 1s ease-in-out infinite;
+	perspective: 1000px;
+	transform-style: preserve-3d;
+	z-index: 10;
 }
 
+@keyframes selectedCard {
+  0% {
+    transform: scale(1) rotate3d(0,0,1,-2deg);
+  }
+  50% {
+    transform: scale(1.03) rotate3d(.2,.2,.2, 2deg);
+  }
+  100% {
+    transform: scale(1) rotate3d(0,0,1,-2deg);
+  }
+}
 
 .player1 {
 	grid-area: player1cards;

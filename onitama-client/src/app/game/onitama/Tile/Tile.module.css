@@ -1,3 +1,29 @@
+.tile {
+	position: relative;
+}
+.tile svg {
+	width: 100%;
+	pointer-events: none;
+}
+.tile.typepawn svg{
+	width:70%;
+}
+.tile.selectedUnit :is(.arms, .sword){
+	animation: arm-selected-animation .5s linear infinite alternate;
+}
+@keyframes arm-selected-animation {
+	to {
+		transform: translateY(-5px)
+	}
+}
+.tile.selectedUnit .head{
+	animation: head-selected-animation .5s linear infinite alternate;
+}
+@keyframes head-selected-animation {
+	to {
+		transform: translateY(5px)
+	}
+}
 .selectedUnit {
 	border: 5px solid #6da3a0;
 }
@@ -21,6 +47,8 @@
 .unitimage {
 	width: 100%;
 }
+
+
 .typepawn .unitimage {
 	width: 50%;
 }

@@ -26,7 +26,7 @@ body *::before {
 	background-repeat: no-repeat;
 	font-size: 1.5rem;
 
-	@media (max-width: 800px) {
+	@media (max-width: 820px) {
 		font-size: 1rem;
 	}
 
@@ -35,14 +35,14 @@ body *::before {
 	}
 }
 
-.App.player1Turn {
+.App.player-1-turn {
 	background-position: center 0%;
 	background-image: radial-gradient(circle at 50% -10%,
 			#c22120 0px,
 			transparent 30%);
 }
 
-.App.player2Turn {
+.App.player-2-turn {
 	background-position: center 100%;
 	background-image: radial-gradient(circle at 50% 110%,
 			#2375c2 0px,
