@@ -1,4 +1,4 @@
-import Onitama from "./onitama/App"
+import Onitama from "../../components/onitama/App"
 
 export default function Game() {
   return (

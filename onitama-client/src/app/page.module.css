@@ -1,59 +1,94 @@
 .page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+	--gray-rgb: 0, 0, 0;
+	--gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+	--gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
+	--button-primary-hover: #383838;
+	--button-secondary-hover: #f2f2f2;
 
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-family: var(--font-geist-sans);
+	display: grid;
+	grid-template-rows: 20px 1fr 20px;
+	align-items: center;
+	justify-items: center;
+	max-height: 100svh;
+	padding: 80px;
+	gap: 64px;
+	font-family: var(--font-geist-sans);
 }
 
 @media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+	.page {
+		--gray-rgb: 255, 255, 255;
+		--gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+		--gray-alpha-100: rgba(var(--gray-rgb), 0.06);
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
-}
-
-.newGameLink{
-	background:white;
-	color:#333;
-	padding:.5rem 2rem;
-	border-radius:9999px;
-	&:hover{
-		background-color:purple;
-		color:white;
+		--button-primary-hover: #ccc;
+		--button-secondary-hover: #1a1a1a;
 	}
 }
 
-/* Enable hover only on non-touch devices */
+.main {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	grid-row-start: 2;
+}
+
+.title {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: clamp(3rem, 6vw, 12rem);
+	position: relative;
+}
+
+.title .top {
+	font-size: 2em;
+	position: relative;
+	font-weight: bold;
+	display: block;
+	z-index: 1;
+
+}
+
+.title .bottom {
+	position: relative;
+	color: purple;
+	display: block;
+	margin-top: -1em;
+	z-index: 2;
+}
+
+.nav {
+	display: flex;
+	gap: 0.5rem;
+	flex-direction: column;
+	align-items: center;
+	max-width: 400px;
+	margin-inline:auto;
+}
+
+.link {
+	background: white;
+	color: #333;
+	padding: 0.5rem 2rem;
+	width: 100%;
+	border-radius: 9999px;
+	text-align: center;
+
+	&:hover {
+		background-color: purple;
+		color: white;
+	}
+}
+
 @media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
+	.page {
+		padding: 32px;
+		padding-bottom: 80px;
+	}
 
-  .main {
-    align-items: center;
-  }
-
+	.main {
+		align-items: center;
+	}
 }
