@@ -105,7 +105,7 @@ function App({
 			) : null}
 
 			{/*For Singleplayer they just need a loading screen while we send them the game*/}
-			{skipWaitingRoom && gameInfo && playerInfo ? (
+			{skipWaitingRoom && !gameState ? (
 				<p style={{ textAlign: "center", marginTop: "20vh" }}>
 					Loading Board...
 				</p>
