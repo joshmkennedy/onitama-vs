@@ -68,6 +68,7 @@ func sendMessage(msg string) []byte {
 }
 
 func sendGameState(state *game.GameState) []byte {
+    log.Println("Sending Game State")
 	jsonState, err := json.Marshal(GameMessage{Payload: state, MsgType: "gameState"})
 	if err != nil {
 		return []byte{}
@@ -161,6 +162,7 @@ func (g *Game) AIRecieve(msg []byte) {
 	for client := range g.Clients {
 		select {
 		case client.send <- reply:
+            log.Println("AiPlayer sent a message")
 		default:
 			close(client.send)
 			delete(g.Clients, client)
@@ -175,7 +177,8 @@ func (g *Game) AIHandleMessage(msg []byte) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	if len(g.Clients) < 2 || g.GameKind == "singleplayer" {
+    // DO WE NEED DIS
+	if len(g.Clients) < 2 && g.GameKind != "singleplayer" {
 		return sendGameInfoUpdateMessage(g.Id, len(g.Clients), g.GameKind), nil
 	}
 
@@ -185,13 +188,13 @@ func (g *Game) AIHandleMessage(msg []byte) ([]byte, error) {
 
     // RESULT REALLY CAN ONLY BE WON_STATE_REACHED or SUCCESS
     if result != game.SUCCESS && result != game.WON_STATE_REACHED {
-        log.Println("AiPlayer returned an error")
+        log.Println("AiPlayer returned an error", result)
     }
 
 	if result == game.WON_STATE_REACHED {
 		g.State.Status = game.STATUS_WON
 		return sendEndGameMessage(g.State), nil
 	}
-
+    
 	return sendGameState(g.State), nil
 }
