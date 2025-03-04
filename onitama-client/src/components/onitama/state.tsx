@@ -8,11 +8,16 @@ export const selectedUnitStore = atom<null | Unit>(null);
 export const gameStateStore = atom<GameState | undefined>(undefined);
 
 export const playerInfoStore = atom<{ playerId: number } | undefined>(
-  undefined,
+	undefined,
 );
 
 export const gameInfoStore = atom<
-  { gameId: string; playerCount: number } | undefined
+	| {
+		gameId: string;
+		playerCount: number;
+		gameKind: "singleplayer" | "mulitplayer";
+	}
+	| undefined
 >(undefined);
 
 // export function usePlayTurn() {

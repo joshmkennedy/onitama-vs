@@ -44,9 +44,14 @@ func ServeWs(h *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+    gameKind := r.URL.Query().Get("kind")
+    if gameKind == "" {
+        gameKind = "multiplayer"
+    }
+
     gameId := r.URL.Query().Get("gameId")
     if gameId == "" {
-        gameId,err = h.newGame()
+        gameId,err = h.newGame(gameKind)
         if err != nil {
             log.Println("No Game Id given attempted to create new game but got error\n",err)
         }
@@ -57,6 +62,7 @@ func ServeWs(h *Hub, w http.ResponseWriter, r *http.Request) {
 		hub:    h,
 		send:   make(chan []byte),
 		gameId: gameId,
+        gameKind: gameKind,
 	}
 
 	h.register <- client
@@ -79,6 +85,8 @@ type Client struct {
 	gameId string
 
     PlayerId uint8
+
+    gameKind string
 }
 
 // When a user makes a move or communicates 

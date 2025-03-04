@@ -10,14 +10,10 @@ import (
 
 func NewHub() *Hub {
 	return &Hub{
-
-		broadcast: make(chan *Message),
-
-		register: make(chan *Client),
-
+		broadcast:  make(chan *Message),
+		register:   make(chan *Client),
 		unregister: make(chan *Client),
-
-		games: make(map[string]*Game),
+		games:      make(map[string]*Game),
 	}
 }
 
@@ -50,7 +46,7 @@ func (h *Hub) Run() {
 
 		case client := <-h.unregister:
 			if _, ok := h.games[client.gameId].Clients[client]; ok {
-                h.LeaveGame(client, client.gameId)
+				h.LeaveGame(client, client.gameId)
 				close(client.send)
 			}
 
@@ -73,6 +69,11 @@ func (h *Hub) Run() {
 						}
 					}
 				}
+
+                // this is the best way for now I can think to have AI Run the play command only when player plays thier turn
+				if g.GameKind == "singleplayer" && to == 0 { 
+				    go g.AIRecieve(reply)
+				}
 			}
 		}
 	}
@@ -90,7 +91,12 @@ func (h *Hub) RegisterGame(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	gameId, err := h.newGame()
+	gameKind := r.URL.Query().Get("kind")
+	if gameKind == "" {
+		gameKind = "multiplayer"
+	}
+
+	gameId, err := h.newGame(gameKind)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -101,13 +107,15 @@ func (h *Hub) RegisterGame(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
-func (h *Hub) newGame() (string, error) {
+func (h *Hub) newGame(gameKind string) (string, error) {
 	newGameId := utils.GenerateGameID()
 
 	h.games[newGameId] = &Game{
-		Id:      newGameId,
-		Clients: make(map[*Client]bool),
-		State:   game.NewGameState(),
+		Id:       newGameId,
+		Clients:  make(map[*Client]bool),
+		State:    game.NewGameState(),
+		GameKind: gameKind,
+		hub:      h,
 	}
 	log.Println("Created new game: ", newGameId)
 	return newGameId, nil
@@ -120,7 +128,7 @@ func (h *Hub) JoinGame(client *Client, gameId string) {
 	}
 
 	if _, ok := h.games[gameId]; !ok {
-		gid, err := h.newGame()
+		gid, err := h.newGame(client.gameKind)
 		if err != nil {
 			log.Println("Couldnt Create new Game from Join Game")
 			return
@@ -134,7 +142,7 @@ func (h *Hub) JoinGame(client *Client, gameId string) {
 	}
 
 	if len(h.games[gameId].Clients) >= 2 {
-		gid, err := h.newGame()
+		gid, err := h.newGame(client.gameKind)
 		if err != nil {
 			log.Println("Couldnt Create new Game from Join Game")
 			return
@@ -154,13 +162,13 @@ func (h *Hub) JoinGame(client *Client, gameId string) {
 	playerCount := len(h.games[gameId].Clients)
 
 	client.send <- sendMessage("You have joined " + client.gameId + " as Player " + string(client.PlayerId))
-	client.send <- sendWelcomeMessage(client.PlayerId, client.gameId, playerCount)
+	client.send <- sendWelcomeMessage(client.PlayerId, client.gameId, playerCount, client.gameKind)
 
-	if len(h.games[client.gameId].Clients) == 2 {
+	if len(h.games[client.gameId].Clients) == 2 || client.gameKind == "singleplayer" {
 		h.games[client.gameId].State.Status = game.STATUS_PLAYING
 		for client := range h.games[client.gameId].Clients {
 			client.send <- sendGameState(h.games[client.gameId].State)
-			client.send <- sendGameInfoUpdateMessage(gameId, playerCount)
+			client.send <- sendGameInfoUpdateMessage(gameId, playerCount, client.gameKind)
 		}
 	}
 	log.Println("Joined game: ", client.gameId)
@@ -175,7 +183,7 @@ func (h *Hub) LeaveGame(client *Client, gameId string) {
 			delete(h.games, gameId) // Remove empty game
 		} else {
 			for client := range game.Clients {
-				client.send <- sendGameInfoUpdateMessage(gameId, playerCount)
+				client.send <- sendGameInfoUpdateMessage(gameId, playerCount, game.GameKind)
 			}
 		}
 		client.gameId = ""

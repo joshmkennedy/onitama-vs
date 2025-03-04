@@ -2,13 +2,17 @@ package hub
 
 import (
 	"encoding/json"
+	"log"
 	"onitama-server/pkg/game"
+	"time"
 )
 
 type Game struct {
-	Id      string
-	Clients map[*Client]bool
-	State   *game.GameState
+	Id       string
+	Clients  map[*Client]bool
+	State    *game.GameState
+	GameKind string
+	hub      *Hub
 }
 
 func (g *Game) HandleMessage(message *Message) (uint8, []byte, error) {
@@ -18,9 +22,9 @@ func (g *Game) HandleMessage(message *Message) (uint8, []byte, error) {
 		return 0, []byte{}, err
 	}
 
-	if len(g.Clients) < 2 {
-		return 0, sendGameInfoUpdateMessage(g.Id, len(g.Clients)), nil
-	}
+	if len(g.Clients) < 2 && g.GameKind != "singleplayer" {
+        return 0, sendGameInfoUpdateMessage(g.Id, len(g.Clients), g.GameKind), nil
+    }
 
 	// MAIN GAME LOGIC HAPPENS IN HERE 👇
 	result := g.State.HandleEvent(message.From, decodedMsg.MsgType, decodedMsg.Payload)
@@ -46,6 +50,7 @@ func (g *Game) HandleMessage(message *Message) (uint8, []byte, error) {
 	if result == game.WRONG_PLAYER {
 		return g.State.CurrentPlayer, sendMessage("Not your turn BRUH"), nil
 	}
+
 	return 0, sendGameState(g.State), nil
 }
 
@@ -73,6 +78,7 @@ func sendGameState(state *game.GameState) []byte {
 type GameInfo struct {
 	GameId      string `json:"gameId"`
 	PlayerCount int    `json:"playerCount"`
+	GameKind    string `json:"gameKind"`
 }
 type PlayerInfo struct {
 	PlayerId uint8 `json:"playerId"`
@@ -83,13 +89,14 @@ type WelcomePayload struct {
 	GameInfo   `json:"gameInfo"`
 }
 
-func sendWelcomeMessage(playerId uint8, gameId string, playerCount int) []byte {
+func sendWelcomeMessage(playerId uint8, gameId string, playerCount int, gameKind string) []byte {
 	jsonMsg, err := json.Marshal(GameMessage{Payload: WelcomePayload{
 		PlayerInfo: PlayerInfo{
 			PlayerId: playerId,
 		},
 		GameInfo: GameInfo{
 			GameId:      gameId,
+			GameKind:    gameKind,
 			PlayerCount: playerCount,
 		},
 	}, MsgType: "welcome"})
@@ -99,11 +106,12 @@ func sendWelcomeMessage(playerId uint8, gameId string, playerCount int) []byte {
 	return jsonMsg
 }
 
-func sendGameInfoUpdateMessage(gameId string, playerCount int) []byte {
+func sendGameInfoUpdateMessage(gameId string, playerCount int, gameKind string) []byte {
 	jsonMsg, err := json.Marshal(GameMessage{
 		Payload: GameInfo{
 			GameId:      gameId,
 			PlayerCount: playerCount,
+			GameKind:    gameKind,
 		},
 		MsgType: "gameInfoUpdate",
 	})
@@ -138,4 +146,52 @@ func sendNewGameState(state *game.GameState) []byte {
 		return []byte{}
 	}
 	return jsonMsg
+}
+
+// Is the Ai player for singleplayer games
+func (g *Game) AIRecieve(msg []byte) {
+	time.Sleep(time.Second * 1)
+	reply, err := g.AIHandleMessage(msg)
+	if err != nil {
+		log.Println("Error handling message in the Ai recieve")
+		return
+	}
+
+	// we just going to short circut the hub here and broad cast the message directly to the client
+	for client := range g.Clients {
+		select {
+		case client.send <- reply:
+		default:
+			close(client.send)
+			delete(g.Clients, client)
+		}
+	}
+}
+
+func (g *Game) AIHandleMessage(msg []byte) ([]byte, error) {
+	var decodedMsg GameMessage
+	err := json.Unmarshal(msg, &decodedMsg)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	if len(g.Clients) < 2 || g.GameKind == "singleplayer" {
+		return sendGameInfoUpdateMessage(g.Id, len(g.Clients), g.GameKind), nil
+	}
+
+    // If they played their turn we can reply with our AITurn 
+    // we dont really need the payload I dont think
+	result := g.State.AiPlayer(decodedMsg.MsgType, decodedMsg.Payload)
+
+    // RESULT REALLY CAN ONLY BE WON_STATE_REACHED or SUCCESS
+    if result != game.SUCCESS && result != game.WON_STATE_REACHED {
+        log.Println("AiPlayer returned an error")
+    }
+
+	if result == game.WON_STATE_REACHED {
+		g.State.Status = game.STATUS_WON
+		return sendEndGameMessage(g.State), nil
+	}
+
+	return sendGameState(g.State), nil
 }
