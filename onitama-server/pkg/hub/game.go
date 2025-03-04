@@ -23,8 +23,8 @@ func (g *Game) HandleMessage(message *Message) (uint8, []byte, error) {
 	}
 
 	if len(g.Clients) < 2 && g.GameKind != "singleplayer" {
-        return 0, sendGameInfoUpdateMessage(g.Id, len(g.Clients), g.GameKind), nil
-    }
+		return 0, sendGameInfoUpdateMessage(g.Id, len(g.Clients), g.GameKind), nil
+	}
 
 	// MAIN GAME LOGIC HAPPENS IN HERE 👇
 	result := g.State.HandleEvent(message.From, decodedMsg.MsgType, decodedMsg.Payload)
@@ -68,7 +68,7 @@ func sendMessage(msg string) []byte {
 }
 
 func sendGameState(state *game.GameState) []byte {
-    log.Println("Sending Game State")
+	log.Println("Sending Game State")
 	jsonState, err := json.Marshal(GameMessage{Payload: state, MsgType: "gameState"})
 	if err != nil {
 		return []byte{}
@@ -158,16 +158,7 @@ func (g *Game) AIRecieve(msg []byte) {
 		return
 	}
 
-	// we just going to short circut the hub here and broad cast the message directly to the client
-	for client := range g.Clients {
-		select {
-		case client.send <- reply:
-            log.Println("AiPlayer sent a message")
-		default:
-			close(client.send)
-			delete(g.Clients, client)
-		}
-	}
+	log.Println("AiPlayer sending this ", string(reply))
 }
 
 func (g *Game) AIHandleMessage(msg []byte) ([]byte, error) {
@@ -177,24 +168,44 @@ func (g *Game) AIHandleMessage(msg []byte) ([]byte, error) {
 		return []byte{}, err
 	}
 
-    // DO WE NEED DIS
+	// DO WE NEED DIS
 	if len(g.Clients) < 2 && g.GameKind != "singleplayer" {
 		return sendGameInfoUpdateMessage(g.Id, len(g.Clients), g.GameKind), nil
 	}
 
-    // If they played their turn we can reply with our AITurn 
-    // we dont really need the payload I dont think
-	result := g.State.AiPlayer(decodedMsg.MsgType, decodedMsg.Payload)
-
-    // RESULT REALLY CAN ONLY BE WON_STATE_REACHED or SUCCESS
-    if result != game.SUCCESS && result != game.WON_STATE_REACHED {
-        log.Println("AiPlayer returned an error", result)
-    }
-
-	if result == game.WON_STATE_REACHED {
-		g.State.Status = game.STATUS_WON
-		return sendEndGameMessage(g.State), nil
+	// its AI TURN
+	if decodedMsg.MsgType == "gameState" && g.State.CurrentPlayer == 2 {
+		// this should be identical to what a human player would send
+		//{
+		//	type: "playTurn",
+		//	payload: { selectedCard, selectedPosition: selectedPos, selectedUnit },
+		//}
+		card, pos, unit := g.State.AiPlayTurn()
+		result, err := aiTurnMessage(card, pos, unit)
+        if err != nil {
+            log.Println("Error handling message in the Ai recieve")
+        }
+		g.hub.broadcast <- &Message{
+			From:     g.State.CurrentPlayer,
+			GameId:   g.Id,
+			Contents: result,
+		}
 	}
-    
-	return sendGameState(g.State), nil
+
+	return nil, nil
+}
+
+func aiTurnMessage(selectedCard int, selectedPosition game.Position, selectedUnit uint8) ([]byte, error) {
+	jsonMsg, err := json.Marshal(GameMessage{
+		Payload: game.PlayTurnPayload{
+			SelectedCard:     selectedCard,
+			SelectedPosition: selectedPosition,
+			SelectedUnit:     selectedUnit,
+		},
+		MsgType: "playTurn",
+	})
+	if err != nil {
+		return []byte{}, err
+	}
+	return jsonMsg, nil
 }
