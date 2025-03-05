@@ -1,0 +1,123 @@
+.pageContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	padding:1em
+}
+
+.headerContainer {
+	padding: 20px;
+	max-width: 1000px;
+	margin: 0 auto;
+	font-family: Arial, sans-serif;
+}
+.headerContainer p {
+	font-size: 1.3rem;
+	max-width: 60ch;
+}
+
+.sectionContainer {
+	padding: 20px;
+	max-width: 1000px;
+	margin: 0 auto;
+	font-family: Arial, sans-serif;
+	border-radius: 8px;
+	background-color: #2f2f2f;
+	width: 100%;
+}
+
+.title {
+	font-size: 2.5em;
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.center {
+	text-align: center;
+}
+
+.intro {
+	font-size: 1.2em;
+	line-height: 1.6;
+	margin-bottom: 1.5em;
+	text-align: center;
+}
+
+.subtitle {
+	font-size: 2em;
+	margin-top: 1.5em;
+	margin-bottom: 0.5em;
+	text-align: center;
+}
+
+.ruleSection {
+	background-color: #fff;
+	padding: 15px;
+	margin-bottom: 1em;
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.ruleTitle {
+	font-size: 1.5em;
+	margin-bottom: 0.5em;
+	color: #555;
+}
+
+.paragraph {
+	font-size: 1.2rem;
+	max-width: 60ch;
+	margin: 0 auto;
+	line-height: 1.5;
+	margin-bottom: 1em;
+	color: #eee;
+}
+
+.image {
+	max-width: 400px;
+}
+
+.image img {
+	width: 100%;
+}
+
+.centerCol {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1em;
+}
+
+.centerCol p {
+	margin-block: 0.2rem;
+}
+
+.flexRow {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1em;
+}
+
+.flexRow.sqeeze {
+	justify-content: center;
+}
+
+.contentCol {
+	max-width: 50ch;
+
+	.subtitle {
+		text-align: left;
+	}
+}
+
+@media (max-width: 850px) {
+	.flexRow {
+		flex-direction: column;
+	}
+
+	.image {
+		max-width: 700px;
+	}
+}

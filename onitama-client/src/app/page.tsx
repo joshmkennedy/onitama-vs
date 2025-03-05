@@ -1,3 +1,4 @@
+import {LogoTitle} from "@/components/site/logo/logo";
 import styles from "./page.module.css";
 import Link from "next/link";
 
@@ -5,10 +6,7 @@ export default function Home() {
 	return (
 		<div className={styles.page}>
 			<main className={styles.main}>
-				<h1 className={styles.title}>
-					<span className={styles.top}>Onitama</span>
-					<span className={styles.bottom}>vs</span>
-				</h1>
+				<LogoTitle />
 				<div className={styles.menu}>
 					<nav className={styles.nav}>
 						<Link className={styles.link} href="/game-single">Play Single Player</Link>

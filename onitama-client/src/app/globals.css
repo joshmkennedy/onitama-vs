@@ -26,6 +26,10 @@ a:hover {
 
 body {
   margin: 0;
+	box-sizing: border-box;
+}
+body *, body *::before, body *::after {
+	box-sizing: inherit;
 }
 
 h1 {

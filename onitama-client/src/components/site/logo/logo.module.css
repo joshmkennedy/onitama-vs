@@ -1,0 +1,47 @@
+.title {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: clamp(3rem, 6vw, 12rem);
+	position: relative;
+}
+
+.title .top {
+	font-size: 2em;
+	position: relative;
+	font-weight: bold;
+	display: block;
+	z-index: 1;
+}
+
+.title .bottom {
+	position: relative;
+	color: purple;
+	display: block;
+	margin-top: -1em;
+	z-index: 2;
+}
+
+.logo {
+	color: white;
+	position: relative;
+	font-size: clamp(1rem, 3vw, 12rem);
+	line-height: 1;
+	.top{
+		z-index: 1;
+	}
+	.bottom {
+		font-weight: bold;
+		margin-left:-.2em;
+		z-index: 2;
+		color: purple;
+	}
+	&:hover {
+		.top {
+			color: purple;
+		}
+		.bottom {
+			color: white;
+		}
+	}
+}

@@ -1,0 +1,20 @@
+.siteHeader {
+	margin-inline: auto;
+	max-width: 1000px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.navigation {
+	display: flex;
+	gap: 1em;
+}
+.navigation a {
+	text-decoration: none;
+	color: white;
+	font-size: 1.2rem;
+}
+.navigation:has(a:hover) a:not(:hover) {
+	opacity: 0.8;
+}
