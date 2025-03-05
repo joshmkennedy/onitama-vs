@@ -36,7 +36,7 @@ func (g *GameState) AiPlayTurn() (int, Position, uint8) {
 
 				ourUnits := g.PlayerUnits(2)
 				for _, ourUnit := range ourUnits {
-					if ourUnit.Position == possibleMovePos {
+					if ourUnit.Position.X == possibleMovePos.X && ourUnit.Position.Y == possibleMovePos.Y {
 						continue
 					}
 				}
@@ -44,7 +44,6 @@ func (g *GameState) AiPlayTurn() (int, Position, uint8) {
 				validMoves = append(validMoves, turn)
 				foundPos = true
 			}
-
 		}
 	}
 
