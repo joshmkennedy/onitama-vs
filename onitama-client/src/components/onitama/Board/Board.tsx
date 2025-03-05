@@ -15,6 +15,9 @@ import { Tile } from "../Tile/Tile";
 import { PlayerCards } from "../PlayerCards/PlayerCards";
 import NextCard from "../NextCard/NextCard";
 
+import DebugComponent from "../debug/debug.tsx";
+
+
 const boardGrid = buildGrid(5);
 
 export default function Board({
@@ -130,6 +133,8 @@ export default function Board({
 
   return (
     <div className={styles.boardWrapper}>
+				 {process.env.NODE_ENV === "development" && <DebugComponent />}
+
       <PlayerCards
         player={1}
         selected={selectedCard}
@@ -145,6 +150,8 @@ export default function Board({
             );
             return (
               <Tile
+								x={x}
+								y={y}
                 isSelectedPos={selectedPos?.x == x && selectedPos?.y == y}
                 isSelectedUnit={
                   selectedUnit?.position.x == x && selectedUnit?.position.y == y
