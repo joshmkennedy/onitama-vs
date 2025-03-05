@@ -47,12 +47,20 @@ export default function CurrentGameStateNotifier({
       }
       setCurrentMessage(undefined);
     },
-    [timer, setCurrentMessage],
+    [timer.current, setCurrentMessage],
   );
 
+	useEffect(() => {
+		console.log(currentMessage)
+	}, [currentMessage])
+
   useEffect(() => {
+		console.log("winner state = ", winner)
     const isPlayerTurn = currentPlayer === thisPlayer;
     if (winner > 0) {
+			if(timer.current) {
+				clearTimeout(timer.current)
+			}
       setCurrentMessage(winner == thisPlayer ? WON : LOST);
     } else {
       if (isPlayerTurn) {
