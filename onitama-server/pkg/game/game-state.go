@@ -36,13 +36,15 @@ type GameState struct {
 	CurrentPlayer uint8 `json:"currentPlayer"`
 
 	// Cards Available in this game
+    // cards are based from player 2 perspective 
+    // forward is -1
 	Cards []Card `json:"cards"`
 
 	// Player 1's Cards they can play
-	Player1Cards [2]int `json:"player1Cards"`
+	Player1Cards []int `json:"player1Cards"`
 
 	// Player 2's Cards they can play
-	Player2Cards [2]int `json:"player2Cards"`
+	Player2Cards []int `json:"player2Cards"`
 
 	// Next Card Available to Player 1
 	Player1NextCard *int `json:"player1NextCard"`
@@ -51,10 +53,10 @@ type GameState struct {
 	Player2NextCard *int `json:"player2NextCard"`
 
 	// Player 1's Units
-	Player1Units [5]*Unit `json:"player1Units"`
+	Player1Units []*Unit `json:"player1Units"`
 
 	// Player 2's Units
-	Player2Units [5]*Unit `json:"player2Units"`
+	Player2Units []*Unit `json:"player2Units"`
 }
 
 type Card struct {
@@ -78,12 +80,12 @@ type Unit struct {
 func NewGameState() *GameState {
 	generatedCards := generateCards()
 
-    player1Cards := [2]int{0,1}
+    player1Cards := []int{0,1}
 	player1NextCard := 2
 
-    player2Cards := [2]int{3,4}
+    player2Cards := []int{3,4}
 
-	var player1Units = [5]*Unit{
+	var player1Units = []*Unit{
 		{Id: 1, Type: "pawn", Position: Position{X: 0, Y: 0}, Owner: 1, IsAlive: true},
 		{Id: 2, Type: "pawn", Position: Position{X: 1, Y: 0}, Owner: 1, IsAlive: true},
 		{Id: 3, Type: "captain", Position: Position{X: 2, Y: 0}, Owner: 1, IsAlive: true},
@@ -91,7 +93,7 @@ func NewGameState() *GameState {
 		{Id: 5, Type: "pawn", Position: Position{X: 4, Y: 0}, Owner: 1, IsAlive: true},
 	}
 
-	var player2Units = [5]*Unit{
+	var player2Units = []*Unit{
 		{Id: 6, Type: "pawn", Position: Position{X: 0, Y: 4}, Owner: 2, IsAlive: true},
 		{Id: 7, Type: "pawn", Position: Position{X: 1, Y: 4}, Owner: 2, IsAlive: true},
 		{Id: 8, Type: "captain", Position: Position{X: 2, Y: 4}, Owner: 2, IsAlive: true},

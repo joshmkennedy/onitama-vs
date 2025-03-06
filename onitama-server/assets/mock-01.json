@@ -1,0 +1,213 @@
+{
+	"Status": 1,
+	"currentPlayer": 2,
+	"cards": [
+		{
+			"name": "Elephant",
+			"positions": [
+				{
+					"x": -1,
+					"y": -1
+				},
+				{
+					"x": -1,
+					"y": 0
+				},
+				{
+					"x": 1,
+					"y": 0
+				},
+				{
+					"x": 1,
+					"y": -1
+				}
+			]
+		},
+		{
+			"name": "Lynx",
+			"positions": [
+				{
+					"x": -1,
+					"y": -2
+				},
+				{
+					"x": 1,
+					"y": -2
+				},
+				{
+					"x": -1,
+					"y": 2
+				},
+				{
+					"x": 1,
+					"y": 2
+				}
+			]
+		},
+		{
+			"name": "Scorpion",
+			"positions": [
+				{
+					"x": -1,
+					"y": -1
+				},
+				{
+					"x": 1,
+					"y": -1
+				},
+				{
+					"x": 0,
+					"y": 2
+				}
+			]
+		},
+		{
+			"name": "Buffalo",
+			"positions": [
+				{
+					"x": -2,
+					"y": 0
+				},
+				{
+					"x": 2,
+					"y": 0
+				},
+				{
+					"x": 0,
+					"y": 1
+				}
+			]
+		},
+		{
+			"name": "Panda",
+			"positions": [
+				{
+					"x": -1,
+					"y": 0
+				},
+				{
+					"x": 1,
+					"y": 0
+				},
+				{
+					"x": 0,
+					"y": -2
+				}
+			]
+		}
+	],
+	"player1Cards": [
+		2,
+		1
+	],
+	"player2Cards": [
+		3,
+		4
+	],
+	"player1NextCard": null,
+	"player2NextCard": 0,
+	"player1Units": [
+		{
+			"id": 1,
+			"owner": 1,
+			"type": "pawn",
+			"position": {
+				"x": 0,
+				"y": 0
+			},
+			"isAlive": true
+		},
+		{
+			"id": 2,
+			"owner": 1,
+			"type": "pawn",
+			"position": {
+				"x": 1,
+				"y": 0
+			},
+			"isAlive": true
+		},
+		{
+			"id": 3,
+			"owner": 1,
+			"type": "captain",
+			"position": {
+				"x": 3,
+				"y": 1
+			},
+			"isAlive": true
+		},
+		{
+			"id": 4,
+			"owner": 1,
+			"type": "pawn",
+			"position": {
+				"x": 3,
+				"y": 0
+			},
+			"isAlive": true
+		},
+		{
+			"id": 5,
+			"owner": 1,
+			"type": "pawn",
+			"position": {
+				"x": 4,
+				"y": 0
+			},
+			"isAlive": true
+		}
+	],
+	"player2Units": [
+		{
+			"id": 6,
+			"owner": 2,
+			"type": "pawn",
+			"position": {
+				"x": 0,
+				"y": 4
+			},
+			"isAlive": true
+		},
+		{
+			"id": 7,
+			"owner": 2,
+			"type": "pawn",
+			"position": {
+				"x": 1,
+				"y": 4
+			},
+			"isAlive": true
+		},
+		{
+			"id": 8,
+			"owner": 2,
+			"type": "captain",
+			"position": {
+				"x": 2,
+				"y": 4
+			},
+			"isAlive": true
+		},
+		{
+			"id": 9,
+			"owner": 2,
+			"type": "pawn",
+			"position": {
+				"x": 3,
+				"y": 4
+			},
+			"isAlive": true
+		},
+		{
+			"id": 10,
+			"owner": 2,
+			"type": "pawn",
+			"position": {
+				"x": 4,
+				"y": 4
+			},
+			"isAlive": true
+		}
+	]
+}

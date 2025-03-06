@@ -116,11 +116,11 @@ func (g *GameState) PlayTurn(from uint8, rawPayload map[string]interface{}) uint
 	return SUCCESS
 }
 
-func (g *GameState) PlayerUnits(player uint8) *[5]*Unit {
+func (g *GameState) PlayerUnits(player uint8) []*Unit {
 	if player == 1 {
-		return &g.Player1Units
+		return g.Player1Units
 	}
-	return &g.Player2Units
+	return g.Player2Units
 }
 
 func (g *GameState) getPlayerNextCard(player uint8) *int {
@@ -183,11 +183,11 @@ func (g *GameState) moveUnit(unitId uint8, pos Position) error {
 	return fmt.Errorf("Unit not found")
 }
 
-func (g *GameState) PlayerCards(player uint8) *[2]int {
+func (g *GameState) PlayerCards(player uint8) []int {
 	if player == 1 {
-		return &g.Player1Cards
+		return g.Player1Cards
 	}
-	return &g.Player2Cards
+	return g.Player2Cards
 }
 
 func (g *GameState) hasCard(player uint8, idx int) bool {
@@ -206,7 +206,7 @@ func (g *GameState) hasCard(player uint8, idx int) bool {
 }
 
 func (g *GameState) positionOnCard(start, end Position, cardIdx int) bool {
-	possibleMoves := normalizePositionsForPlayer(g.CurrentPlayer, g.Cards[cardIdx].Positions)
+	possibleMoves := normalizeCardPositionsForPlayer(g.CurrentPlayer, g.Cards[cardIdx].Positions)
 	log.Println("Unit Starts at", start, "Ends at", end)
 	log.Println("Card Positions", possibleMoves)
 
@@ -218,7 +218,7 @@ func (g *GameState) positionOnCard(start, end Position, cardIdx int) bool {
 	return false
 }
 
-func normalizePositionsForPlayer(player uint8, positions []Position) []Position {
+func normalizeCardPositionsForPlayer(player uint8, positions []Position) []Position {
 	if player == 2 {
 		return positions
 	}
