@@ -10,6 +10,7 @@ const geistSans = Geist({
 const jotiOne = Joti_One({
 	weight: "400",
   variable: "--font-joti-one",
+	subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({

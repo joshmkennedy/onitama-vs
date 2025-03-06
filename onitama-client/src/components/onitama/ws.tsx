@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-let ws: WebSocket;
+let ws: WebSocket|undefined;
 
 export type WSConfigSettings = {
 	gameKind: "singleplayer" | "mulitplayer";
@@ -42,7 +42,7 @@ export function useWS({
 		}
 		return () => {
 			setTimeout(() => {
-				if (ws.readyState === WebSocket.OPEN) {
+				if (ws && ws?.readyState === WebSocket.OPEN) {
 					ws.close(1000, "Client closing connection");
 					setSocket(undefined);
 				}

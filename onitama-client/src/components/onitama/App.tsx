@@ -72,7 +72,7 @@ function App({
     selectedUnit: number,
   ) {
     if (winner > 0) return;
-    ws.send(
+    ws?.send(
       JSON.stringify({
         type: "playTurn",
         payload: { selectedCard, selectedPosition: selectedPos, selectedUnit },
@@ -81,7 +81,7 @@ function App({
   }
 
   function resetGame() {
-    ws.send(
+    ws?.send(
       JSON.stringify({
         type: "newGame",
         payload: {},
