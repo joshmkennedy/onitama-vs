@@ -1,6 +1,8 @@
 import { useAtom } from "jotai";
 import { gameStateStore, playerInfoStore } from "../state";
 import styles from "./Header.module.css";
+import Menu from "../Menu/Menu";
+
 export default function Header({
   showHelp,
   newGame,
@@ -26,9 +28,7 @@ export default function Header({
           <div className={styles.whosTurn}>
             {isPlayerTurn ? "Your turn" : "Waiting for other player"}
           </div>
-          <button className={styles.showHelp} onClick={showHelp}>
-            ?
-          </button>
+					<Menu newGame={newGame} showHelp={showHelp} />
         </>
       )}
     </header>

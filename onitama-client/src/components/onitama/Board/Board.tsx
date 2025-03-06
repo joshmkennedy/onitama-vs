@@ -17,7 +17,6 @@ import NextCard from "../NextCard/NextCard";
 
 import DebugComponent from "../debug/debug";
 
-
 const boardGrid = buildGrid(5);
 
 export default function Board({

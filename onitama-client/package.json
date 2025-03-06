@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
     "framer-motion": "^12.4.7",
     "jotai": "^2.12.1",
     "next": "15.1.7",
