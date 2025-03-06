@@ -49,7 +49,7 @@ func (g *GameState) AiPlayTurn() (int, Position, uint8) {
 					}
 				}
 
-				if possibleMove.X >= 0 && possibleMove.X < 5 && possibleMove.Y >= 0 || possibleMove.Y < 5 {
+				if possibleMove.X >= 0 && possibleMove.X < 5 && possibleMove.Y >= 0 && possibleMove.Y < 5 {
 					moveRating := moveEvaluator.Rating(possibleMove)
 					turn := Turn{Card: cardIdx, Pos: possibleMove, Unit: unit.Id, Rating: moveRating}
 					validMoves = append(validMoves, turn)
