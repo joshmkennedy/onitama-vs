@@ -18,8 +18,8 @@ export default function About() {
         <p className={styles.intro}>
           Onitama is a two-player abstract strategy game where each player
           controls a Master and four Students on a 5x5 board. The objective is
-          to either capture the opponent's Master or move your Master into the
-          opponent's Temple Arch.
+          to either capture the opponent&apos;s Master or move your Master into the
+          opponent&apos;s Temple Arch.
         </p>
       </div>
 
@@ -70,14 +70,14 @@ export default function About() {
       <div className={styles.sectionContainer}>
         <div className={styles.flexRow}>
           <div className={styles.contentCol}>
-            <h2 className={styles.subtitle}>The Player's Turn</h2>
+            <h2 className={styles.subtitle}>The Player&apos;s Turn</h2>
             <p className={styles.paragraph}>
-              On the player's turn, they will first select the card they wish to
+              On the player&apos;s turn, they will first select the card they wish to
               use from their side of the board. Then they will choose the unit
               they wish to move using the selected card. After they have chosen
               the unit, the player will select a position to move to. Finally,
-              they will click the "Confirm" button to confirm their move. It
-              will then be the next player's turn.
+              they will click the &ldquo;Confirm&ldquo; button to confirm their move. It
+              will then be the next player&apos;s turn.
             </p>
           </div>
           <div className={styles.image}>
@@ -92,14 +92,14 @@ export default function About() {
       <div className={styles.sectionContainer}>
         <h2 className={styles.subtitle}>Win Conditions</h2>
         <p className={`${styles.paragraph} ${styles.center}`}>
-          You can win by either capturing the opponent's Captain or by capturing
+          You can win by either capturing the opponent&apos;s Captain or by capturing
           their base.
         </p>
         <div className={styles.flexRow}>
           <div className={styles.image}>
             <div className={styles.centerCol}>
               <p>Capture Opponent Captain</p>
-              <img src={WinCaptureCaptain} alt="capturing team's captain" />
+              <img src={WinCaptureCaptain} alt="capturing team&apos;s captain" />
             </div>
           </div>
           <div className={styles.image}>

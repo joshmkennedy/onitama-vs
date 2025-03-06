@@ -34,6 +34,6 @@ export function useWS({
 				console.log("OPENED CONNECTION");
 			};
 		}
-	}, [messageHandler]);
+	}, [messageHandler, info.gameKind]);
 	return ws;
 }

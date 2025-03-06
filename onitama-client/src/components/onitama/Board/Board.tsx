@@ -15,7 +15,7 @@ import { Tile } from "../Tile/Tile";
 import { PlayerCards } from "../PlayerCards/PlayerCards";
 import NextCard from "../NextCard/NextCard";
 
-import DebugComponent from "../debug/debug.tsx";
+import DebugComponent from "../debug/debug";
 
 
 const boardGrid = buildGrid(5);
