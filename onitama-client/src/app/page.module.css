@@ -1,10 +1,6 @@
 .page {
-	--gray-rgb: 0, 0, 0;
-	--gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-	--gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-	--button-primary-hover: #383838;
-	--button-secondary-hover: #f2f2f2;
+	--button-primary-hover: var(--accent--base);
 
 	display: grid;
 	grid-template-rows: 20px 1fr 20px;
@@ -14,17 +10,6 @@
 	padding: 80px;
 	gap: 64px;
 	font-family: var(--font-geist-sans);
-}
-
-@media (prefers-color-scheme: dark) {
-	.page {
-		--gray-rgb: 255, 255, 255;
-		--gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-		--gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-		--button-primary-hover: #ccc;
-		--button-secondary-hover: #1a1a1a;
-	}
 }
 
 .main {
@@ -44,22 +29,25 @@
 }
 
 .link {
-	background: white;
-	color: #333;
+	font-weight: 800;
+	background: var(--stone--base);
+	color: var(--contrast--01);
 	padding: 0.5rem 2rem;
 	width: 100%;
 	border-radius: 9999px;
 	text-align: center;
 
 	&:hover {
-		background-color: purple;
-		color: white;
+		background-color: var(--accent--base);
+		color: var(--stone--light);
 	}
 }
+
 .link.secondary {
-	background: black;
-	color: white;
+	background: var(--contrast--03);
+	color: var(--stone--light);
 	&:hover {
+
 		opacity: 0.8;
 	}
 }

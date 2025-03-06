@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Joti_One } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const jotiOne = Joti_One({
+	weight: "400",
+  variable: "--font-joti-one",
 });
 
 const geistMono = Geist_Mono({
@@ -25,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <link rel="icon shortcut" href="/Player1-captain.png" />
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${jotiOne.variable}`}>
         {children}
       </body>
     </html>

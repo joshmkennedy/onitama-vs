@@ -52,7 +52,7 @@ export default function Menu({
 						</div>
 						<div className={styles.menuItemText}>New Game</div>
 					</button>
-					<Link href="/" className={styles.menuItem}>
+					<Link href="/" className={`${styles.menuItem} as-button`}>
 						<div className={styles.menuItemIcon}>
 							<Home />
 						</div>

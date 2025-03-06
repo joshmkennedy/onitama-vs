@@ -54,18 +54,6 @@
 	width: 100%;
 	border-radius: 8px;
 	border: 1px solid #0000;
-	padding: 0.6em 1.2em;
-	font-size: 1rem;
-	font-weight: 500;
-	font-family: inherit;
-	background-color: #1a1a1a;
-	cursor: pointer;
-	transition: border-color 0.25s;
-	color:white;
-	&:hover {
-		color:white;
-		border-color:#646cff;
-	}
 }
 
 .menuItemIcon svg {

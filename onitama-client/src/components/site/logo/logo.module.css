@@ -1,4 +1,6 @@
 .title {
+	color:var(--stone--light);
+	font-family: var(--font-joti-one);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -16,32 +18,34 @@
 
 .title .bottom {
 	position: relative;
-	color: purple;
+	color: var(--accent--base);
 	display: block;
 	margin-top: -1em;
 	z-index: 2;
 }
 
 .logo {
+	font-family: var(--font-joti-one);
 	color: white;
 	position: relative;
 	font-size: clamp(1rem, 3vw, 12rem);
 	line-height: 1;
 	.top{
+		color:var(--stone--light);
 		z-index: 1;
 	}
 	.bottom {
 		font-weight: bold;
 		margin-left:-.2em;
 		z-index: 2;
-		color: purple;
+		color: var(--accent--base);
 	}
 	&:hover {
 		.top {
-			color: purple;
+			color: var(--accent--base);
 		}
 		.bottom {
-			color: white;
+			color: var(--stone--light);
 		}
 	}
 }
