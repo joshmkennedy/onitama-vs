@@ -18,4 +18,6 @@ ENV CARD_CONFIG_FILE=/app/assets/cards.json
 
 EXPOSE 8080
 
+ENV FRONTEND_URL=https://play-onitama.com
+
 CMD ["./app/onitama-serve"]

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -32,8 +33,7 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
     CheckOrigin: func(r *http.Request) bool {
-        // TODO: 🤷
-        return true
+        return r.Header.Get("Origin") == getAllowedOrigin()
     },
 }
 
@@ -161,4 +161,14 @@ func (c *Client) writePump() {
 			}
 		}
 	}
+}
+
+
+func getAllowedOrigin() string {
+    possibleOrigin := os.Getenv("")
+    if possibleOrigin == "" {
+        // I dont care to set envs in dev 
+        return "http://localhost:3000"
+    }
+    return possibleOrigin
 }

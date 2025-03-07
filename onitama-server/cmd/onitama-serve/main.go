@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"onitama-server/pkg/hub"
+	"os"
 )
 
 var addr = flag.String("addr", ":8080", "http service address")
@@ -29,7 +30,7 @@ func main() {
 	http.HandleFunc("/", serveHome)
 	http.HandleFunc("/register", h.RegisterGame)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*") // ✅ Allows all origins
+		w.Header().Set("Access-Control-Allow-Origin", getAllowedOrigin()) // ✅ Allows all origins
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -40,4 +41,13 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+}
+
+func getAllowedOrigin() string {
+    possibleOrigin := os.Getenv("")
+    if possibleOrigin == "" {
+        // I dont care to set envs in dev 
+        return "http://localhost:3000"
+    }
+    return possibleOrigin
 }
