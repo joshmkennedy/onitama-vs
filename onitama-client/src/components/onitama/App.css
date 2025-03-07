@@ -38,14 +38,14 @@ body *::before {
 .App.player-1-turn {
 	background-position: center 0%;
 	background-image: radial-gradient(circle at 50% -10%,
-			#c22120 0px,
+			var(--red--dark-01) 0px,
 			transparent 30%);
 }
 
 .App.player-2-turn {
 	background-position: center 100%;
 	background-image: radial-gradient(circle at 50% 110%,
-			#2375c2 0px,
+			var(--blue--dark-01) 0px,
 			transparent 30%);
 }
 
@@ -62,11 +62,11 @@ body:has(.help) .App {
 
 
 .red-text {
-	color: #c22120;
+	color: var(--red--dark-01);
 }
 
 .blue-text {
-	color: #2375c2;
+	color: var(--blue--dark-01);
 }
 
 .close {

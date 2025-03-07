@@ -36,9 +36,11 @@
 }
 
 .player1 {
+	--player-color:var(--red--dark-03);
 	grid-area: player1cards;
 }
 
 .player2 {
+	--player-color:var(--blue--dark-03);
 	grid-area: player2cards;
 }

@@ -7,6 +7,8 @@
 }
 
 .whosTurn {
+	font-family: var(--font-joti-one);
+	color:var(--stone--light);
 	font-weight: bold;
 }
 

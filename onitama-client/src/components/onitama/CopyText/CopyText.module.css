@@ -3,6 +3,13 @@
 	justify-content: center;
 	gap: 4px;
 }
+.copyText button {
+	background: var(--accent--base);
+	color: var(--stone--light);
+	&:hover{
+		background: hsl(from var(--accent--base) h s 35%);
+	}
+}
 
 .copyText input {
 	width: 100%;

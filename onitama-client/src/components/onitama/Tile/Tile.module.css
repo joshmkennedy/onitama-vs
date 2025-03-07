@@ -1,5 +1,6 @@
 .tile {
 	position: relative;
+	
 }
 .tile svg {
 	width: 100%;
@@ -24,9 +25,6 @@
 		transform: translateY(5px)
 	}
 }
-.selectedUnit {
-	border: 5px solid #6da3a0;
-}
 
 .typecaptain,
 .typepawn {
@@ -34,14 +32,20 @@
 	place-items: center;
 }
 
-.selectedPos {
-	border: 5px solid #884e83;
-	position: relative;
-	overflow: visible;
-}
 
 .moveHint {
-	background: #bca18e;
+	--tile-bg:var(--tan--base);
+}
+
+.selectedUnit {
+	border: 5px solid var(--green--base);
+	--tile-bg: hsl(from var(--green--base) h s l / 40%);
+}
+.selectedPos {
+	border: 5px solid hsl( from var(--accent--base) h s l / 70%);
+	--tile-bg: hsl( from var(--accent--base) h s l / 40%);
+	position: relative;
+	overflow: visible;
 }
 
 .unitimage {

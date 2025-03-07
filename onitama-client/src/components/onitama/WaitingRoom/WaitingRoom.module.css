@@ -7,6 +7,7 @@
 }
 
 .waitingRoom h1 {
+	font-family: var(--font-joti-one);
 	font-size: 45px;
 }
 
