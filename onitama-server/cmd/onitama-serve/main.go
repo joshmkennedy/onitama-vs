@@ -44,7 +44,7 @@ func main() {
 }
 
 func getAllowedOrigin() string {
-    possibleOrigin := os.Getenv("")
+    possibleOrigin := os.Getenv("FRONTEND_URL")
     if possibleOrigin == "" {
         // I dont care to set envs in dev 
         return "http://localhost:3000"
