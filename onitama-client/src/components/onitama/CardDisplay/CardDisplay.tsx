@@ -36,7 +36,7 @@ export default function CardDisplay({
                 className={`
 									${styles.movePosition}
               ${isCenter(5, { x, y }) ? styles.me: ""}
-              ${isPossibleMove(card.positions, { x, y }, owner) ? styles.possibleMove : ""}
+              ${isPossibleMove(card.positions, { x, y }, playersCard ? 2:1) ? styles.possibleMove : ""}
             `}
               ></div>
             );

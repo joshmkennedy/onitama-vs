@@ -13,6 +13,13 @@
 	grid-template-columns: 200px 1fr 200px;
 	grid-template-rows: 150px 1fr 150px;
 }
+.boardWrapper.inversedBoard {
+	grid-template-areas:
+		"player2cards player2cards player2cards"
+		"rightNext  board leftNext"/* inverse them*/
+		"player1cards player1cards player1cards";
+}
+
 
 @media (max-width: 1000px) {
 	.boardWrapper {
@@ -28,6 +35,12 @@
 			"leftNext player1cards player1cards"
 			"board board board"
 			"player2cards player2cards rightNext";
+	}
+	.boardWrapper.inversedBoard {
+		grid-template-areas:
+			"rightNext player2cards player2cards"
+			"board board board"
+			"player1cards player1cards leftNext";
 	}
 }
 

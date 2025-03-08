@@ -8,8 +8,11 @@
 	@media (max-width: 820px) {
 		flex-wrap: wrap;
 		justify-content: end;
+		&.player1.inversed {
+			justify-content: start;
+		}
 
-		&.player2 {
+		&.player2:not(.inversed) {
 			justify-content: start;
 		}
 	}

@@ -5,6 +5,7 @@
 	container: card-container / size;
 	display: flex;
 	flex-direction: column;
+
 	&>div {
 		width: 100%;
 	}
@@ -30,10 +31,22 @@
 	margin-left: auto;
 }
 
+.inversed.leftNext {
+	justify-content: flex-end;
+	margin-left: unset;
+	margin-right: auto;
+}
+
 .rightNext {
 	grid-area: rightNext;
 	justify-content: flex-end;
 	margin-right: auto;
+}
+
+.inversed.rightNext {
+	justify-content: flex-start;
+	margin-right: unset;
+	margin-left: auto;
 }
 
 @media (max-width: 820px) {
@@ -45,11 +58,13 @@
 			margin-block: 0;
 		}
 
-		&.rightNext {
+		&.rightNext:not(.inversed) {
+			justify-content: unset;
+			flex-direction: row-reverse;
+		}
+		&.leftNext.inversed {
 			justify-content: unset;
 			flex-direction: row-reverse;
 		}
 	}
-
 }
-

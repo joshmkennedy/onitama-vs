@@ -1,5 +1,6 @@
+import { useCallback } from "react";
 import { GameState, Position, Unit } from "./types";
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 
 export const selectedCardStore = atom<null | number>(null);
 export const selectedPosStore = atom<null | Position>(null);
@@ -7,18 +8,68 @@ export const selectedUnitStore = atom<null | Unit>(null);
 
 export const gameStateStore = atom<GameState | undefined>(undefined);
 
-export const playerInfoStore = atom<{ playerId: number } | undefined>(
-	undefined,
-);
+export const playerInfoStore = atom<{ playerId: 1 | 2 } | undefined>(undefined);
 
 export const gameInfoStore = atom<
-	| {
-		gameId: string;
-		playerCount: number;
-		gameKind: "singleplayer" | "mulitplayer";
-	}
-	| undefined
+  | {
+      gameId: string;
+      playerCount: number;
+      gameKind: "singleplayer" | "mulitplayer";
+    }
+  | undefined
 >(undefined);
+
+export function updateGameState(
+  newState: GameState | undefined,
+  isInversed: boolean,
+) {
+  if (!isInversed || !newState) {
+    return newState;
+  }
+  const copy = structuredClone(newState);
+  copy.player1Units = copy.player1Units.map((unit) => {
+    return {
+      ...unit,
+      position: {
+        x: 4 - unit.position.x,
+        y: 4 - unit.position.y,
+      },
+    };
+  });
+  copy.player2Units = copy.player2Units.map((unit) => {
+    return {
+      ...unit,
+      position: {
+        x: 4 - unit.position.x,
+        y: 4 - unit.position.y,
+      },
+    };
+  });
+  return copy;
+}
+
+// the inverse of updateGameState
+export function normalizedTurn(
+  payload: {
+    selectedCard: number;
+    selectedUnit: number;
+    selectedPosition: Position;
+  },
+  isInversed: boolean,
+): { selectedCard: number; selectedUnit: number; selectedPosition: Position } {
+  if (!isInversed) {
+    return payload;
+  }
+
+  return {
+    selectedCard: payload.selectedCard,
+    selectedUnit: payload.selectedUnit,
+    selectedPosition: {
+      x: 4 - payload.selectedPosition.x,
+      y: 4 - payload.selectedPosition.y,
+    },
+  };
+}
 
 // export function usePlayTurn() {
 // 	const [gameState, setGameState] = useAtom(gameStateStore);

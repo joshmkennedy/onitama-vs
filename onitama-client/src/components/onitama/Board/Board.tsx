@@ -3,9 +3,11 @@ import { useAtom } from "jotai";
 import type { Position, Unit } from "../types";
 import {
   gameStateStore,
+  playerInfoStore,
   selectedCardStore,
   selectedPosStore,
   selectedUnitStore,
+  updateGameState,
 } from "../state";
 import { inverseMovePositions, onBoard } from "../utils";
 
@@ -16,12 +18,15 @@ import { PlayerCards } from "../PlayerCards/PlayerCards";
 import NextCard from "../NextCard/NextCard";
 
 import DebugComponent from "../debug/debug";
+import { useMemo } from "react";
 
 const boardGrid = buildGrid(5);
 
 export default function Board({
   playTurn,
+  isInversed,
 }: {
+  isInversed: boolean;
   playTurn: (
     selectedPos: Position,
     selectedCard: number,
@@ -29,6 +34,7 @@ export default function Board({
   ) => void;
 }) {
   const [gameState] = useAtom(gameStateStore);
+  const [playerInfo] = useAtom(playerInfoStore);
   const [selectedUnit, setSelectedUnit] = useAtom(selectedUnitStore);
   const [selectedPos, setSelectedPos] = useAtom(selectedPosStore);
   const [selectedCard, setSelectedCard] = useAtom(selectedCardStore);
@@ -37,14 +43,20 @@ export default function Board({
     setSelectedPos(null);
   }
 
+  const normalizedGameState = useMemo(
+    () => updateGameState(gameState, isInversed),
+    [gameState, isInversed],
+  );
+
   const movePosHints = React.useMemo(() => {
-    if (!gameState) return [];
+    if (!normalizedGameState) return [];
     if (selectedCard == null || selectedUnit == null) return [];
-    const card = gameState.cards[selectedCard];
-    const player = gameState?.currentPlayer;
-    const possiblePosisitons =
-      player == 2 ? card.positions : inverseMovePositions(card.positions);
-    const relativePositions = possiblePosisitons
+    const card = normalizedGameState.cards[selectedCard];
+    const relativePositions = (
+      playerInfo?.playerId == 2
+        ? inverseMovePositions(card.positions)
+        : card.positions
+    )
       .map((pos: Position) => {
         return {
           x: selectedUnit.position.x + pos.x,
@@ -53,11 +65,11 @@ export default function Board({
       })
       .filter(onBoard);
     return relativePositions;
-  }, [selectedCard, selectedUnit, gameState]);
+  }, [isInversed,	selectedCard, selectedUnit, normalizedGameState]);
 
   const chooseTile = React.useCallback(
     function chooseTile(unit: Unit | null, position: Position) {
-      if (!gameState) return;
+      if (!normalizedGameState) return;
 
       if (
         unit?.position.x == selectedUnit?.position.x &&
@@ -68,7 +80,7 @@ export default function Board({
         setSelectedPos(null);
         return;
       }
-      if (unit && unit.owner == gameState.currentPlayer) {
+      if (unit && unit.owner == normalizedGameState.currentPlayer) {
         setSelectedUnit(unit);
         return;
       }
@@ -86,7 +98,7 @@ export default function Board({
         return;
       }
 
-      if (selectedUnit && unit?.owner != gameState?.currentPlayer) {
+      if (selectedUnit && unit?.owner != normalizedGameState?.currentPlayer) {
         if (
           movePosHints.some(
             (hint) => hint.x == position.x && hint.y == position.y,
@@ -100,7 +112,7 @@ export default function Board({
       selectedCard,
       selectedUnit,
       selectedPos,
-      gameState,
+      normalizedGameState,
       movePosHints,
       setSelectedPos,
       setSelectedUnit,
@@ -126,16 +138,24 @@ export default function Board({
     setSelectedCard,
   ]);
 
-  if (!gameState?.player1Units || !gameState?.player2Units) {
+  if (
+    !normalizedGameState?.player1Units ||
+    !normalizedGameState?.player2Units ||
+    !playerInfo
+  ) {
     return null;
   }
 
   return (
-    <div className={styles.boardWrapper}>
-				 {process.env.NODE_ENV === "development" && <DebugComponent />}
+    <div
+      className={`${styles.boardWrapper} ${isInversed ? styles.inversedBoard : ""}`}
+    >
+      {process.env.NODE_ENV === "development" && <DebugComponent />}
 
       <PlayerCards
-        player={1}
+        isInversed={isInversed}
+        side="top"
+        player={playerInfo?.playerId == 1 ? 2 : 1}
         selected={selectedCard}
         setSelected={setSelectedCard}
       />
@@ -144,13 +164,13 @@ export default function Board({
           return row.map((_col, x: number) => {
             const owner = findOwner(
               { x, y },
-              gameState.player1Units,
-              gameState.player2Units,
+              normalizedGameState.player1Units,
+              normalizedGameState.player2Units,
             );
             return (
               <Tile
-								x={x}
-								y={y}
+                x={x}
+                y={y}
                 isSelectedPos={selectedPos?.x == x && selectedPos?.y == y}
                 isSelectedUnit={
                   selectedUnit?.position.x == x && selectedUnit?.position.y == y
@@ -165,12 +185,14 @@ export default function Board({
           });
         })}
       </div>
-      <NextCard player={1} />
-      <NextCard player={2} />
+      <NextCard player={2} isInversed={isInversed} />
+      <NextCard isInversed={isInversed} player={1} />
       <PlayerCards
-        player={2}
+        side="bottom"
+        player={playerInfo?.playerId ?? 1}
         selected={selectedCard}
         setSelected={setSelectedCard}
+        isInversed={isInversed}
       />
     </div>
   );
