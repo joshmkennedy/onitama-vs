@@ -52,11 +52,7 @@ export default function Board({
     if (!normalizedGameState) return [];
     if (selectedCard == null || selectedUnit == null) return [];
     const card = normalizedGameState.cards[selectedCard];
-    const relativePositions = (
-      playerInfo?.playerId == 2
-        ? inverseMovePositions(card.positions)
-        : card.positions
-    )
+    const relativePositions = card.positions
       .map((pos: Position) => {
         return {
           x: selectedUnit.position.x + pos.x,
@@ -65,7 +61,7 @@ export default function Board({
       })
       .filter(onBoard);
     return relativePositions;
-  }, [isInversed,	selectedCard, selectedUnit, normalizedGameState]);
+  }, [isInversed, selectedCard, selectedUnit, normalizedGameState]);
 
   const chooseTile = React.useCallback(
     function chooseTile(unit: Unit | null, position: Position) {
