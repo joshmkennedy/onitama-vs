@@ -9,7 +9,7 @@ import {
   selectedUnitStore,
   updateGameState,
 } from "../state";
-import { inverseMovePositions, onBoard } from "../utils";
+import { onBoard } from "../utils";
 
 import styles from "./Board.module.css";
 
