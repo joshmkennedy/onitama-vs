@@ -67,7 +67,7 @@ function App({
         console.log(data.payload);
       }
     },
-    [setWinner, setPlayerInfo, setGameInfo],
+    [setWinner, setPlayerInfo, setGameInfo, setGameState],
   );
   const ws = useWS({ messageHandler, info: wsSettings });
 

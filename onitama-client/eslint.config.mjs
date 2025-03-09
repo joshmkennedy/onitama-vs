@@ -14,7 +14,8 @@ const eslintConfig = [
   {
     rules: {
       "@typescript-eslint/no-explicit-any": "off", // Allow explicit 'any'
-			 "@typescript-eslint/ban-ts-comment": "off",// allow @ts-ignore
+      "@typescript-eslint/ban-ts-comment": "off", // allow @ts-ignore
+			"@next/next/no-img-element": "off",
     },
   },
 ];

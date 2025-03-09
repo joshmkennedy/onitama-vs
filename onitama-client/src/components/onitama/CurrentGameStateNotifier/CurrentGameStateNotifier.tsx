@@ -47,12 +47,8 @@ export default function CurrentGameStateNotifier({
       }
       setCurrentMessage(undefined);
     },
-    [timer.current, setCurrentMessage],
+    [setCurrentMessage],
   );
-
-	useEffect(() => {
-		console.log(currentMessage)
-	}, [currentMessage])
 
   useEffect(() => {
 		console.log("winner state = ", winner)
@@ -81,7 +77,7 @@ export default function CurrentGameStateNotifier({
         }, messageTimes[WAITING]);
       }
     }
-  }, [currentPlayer, setCurrentMessage, winner]);
+  }, [currentPlayer, setCurrentMessage, winner, thisPlayer]);
 
   if (currentMessage) {
     return (

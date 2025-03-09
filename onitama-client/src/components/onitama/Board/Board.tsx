@@ -48,7 +48,7 @@ export default function Board({
     [gameState, isInversed],
   );
 
-  const movePosHints = React.useMemo(() => {
+  const movePosHints = useMemo(() => {
     if (!normalizedGameState) return [];
     if (selectedCard == null || selectedUnit == null) return [];
     const card = normalizedGameState.cards[selectedCard];
@@ -61,7 +61,7 @@ export default function Board({
       })
       .filter(onBoard);
     return relativePositions;
-  }, [isInversed, selectedCard, selectedUnit, normalizedGameState]);
+  }, [selectedCard, selectedUnit, normalizedGameState]);
 
   const chooseTile = React.useCallback(
     function chooseTile(unit: Unit | null, position: Position) {
