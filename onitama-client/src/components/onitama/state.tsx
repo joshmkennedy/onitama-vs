@@ -1,6 +1,5 @@
-import { useCallback } from "react";
 import { GameState, Position, Unit } from "./types";
-import { atom, useAtom } from "jotai";
+import { atom } from "jotai";
 
 export const selectedCardStore = atom<null | number>(null);
 export const selectedPosStore = atom<null | Position>(null);
